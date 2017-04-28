@@ -1,7 +1,8 @@
 import React from 'react';
 import { Router , Route, IndexRoute, hashHistory} from 'react-router';
 import { Root } from './root';
-import { Home } from './pages/activities';
+import { Activities } from './pages/activities';
+import { Assignments } from './pages/assignments';
 import { Team } from './pages/team';
 
 export class Routes extends React.Component {
@@ -24,8 +25,9 @@ export class Routes extends React.Component {
         return (
             <Router history={hashHistory} >
                 <Route router={Router} path="/" component={Root} >
-                    <IndexRoute component={Home} />
+                    <Route path="/activities" component={Activities} />
                     <Route path="/team" component={Team} />
+                    <Route path="/assignments" component={Assignments} />
                 </Route>
             </Router>
         );
