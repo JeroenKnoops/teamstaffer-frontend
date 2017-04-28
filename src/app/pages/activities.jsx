@@ -125,37 +125,23 @@ export class Home extends React.Component {
                         name="projectNumber"
                         onChange={this.handleInputChange.bind(this)}
                     />
-
-                    {/*<div className="form-group">*/}
-                        {/*<label className="control-label col-sm-2" for="activityName">Activity Name:</label>*/}
-                        {/*<div className="col-sm-10">*/}
-                            {/*<input type="text" name="activityName" className="form-control" id="activityName"*/}
-                                   {/*placeholder="Enter activity name" onChange={this.handleInputChange.bind(this)}/>*/}
-                        {/*</div>*/}
-                    {/*</div>*/}
-                    {/*<div className="form-group">*/}
-                        {/*<label className="control-label col-sm-2" for="projectNumber">Project Number:</label>*/}
-                        {/*<div className="col-sm-10">*/}
-                            {/*<input type="text" className="form-control" id="projectNumber"*/}
-                                   {/*placeholder="Enter project Number" onChange={this.handleInputChange.bind(this)}/>*/}
-                        {/*</div>*/}
-                    {/*</div>*/}
-                    <div className="form-group">
-                        <label className="control-label col-sm-2" for="domain">Innovation Domain:</label>
-                        <div className="col-sm-10">
-                            <input type="text" className="form-control" id="domain"
-                                   placeholder="Enter innovation domainr" onChange={this.handleInputChange.bind(this)}/>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <label className="control-label col-sm-2" for="phase">Phase:</label>
-                        <div className="col-sm-10">
-                            <input type="text" className="form-control" id="phase" placeholder="Enter activity phase"
-                                   onChange={this.handleInputChange.bind(this)}/>
-                        </div>
-                    </div>
-
+                    <TextInput
+                        label="Innovation Domain"
+                        placeholder="Enter innovation domain"
+                        name="domain"
+                        onChange={this.handleInputChange.bind(this)}
+                    />
+                    <TextInput
+                        label="Phase"
+                        placeholder="Enter activity phase"
+                        name="phase"
+                        onChange={this.handleInputChange.bind(this)}
+                    />
                     <input type="submit" className="btn btn-primary" value="Create activity"/>
+                </form>
+
+                <form className="form-horizontal">
+                    <br/>
                     <ActivityTable>
                         {this.state.activities.map((activity, index) => (
                             <ProductyRow key={index} {...activity}/>

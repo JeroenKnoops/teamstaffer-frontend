@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router , Route, IndexRoute, hashHistory} from 'react-router';
 import { Root } from './root';
-import { Home } from './pages/home';
+import { Home } from './pages/activities';
 import { Team } from './pages/team';
 
 export class Routes extends React.Component {
