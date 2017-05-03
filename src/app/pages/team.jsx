@@ -1,5 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+
+
 
 const StaffMemberRow = (props) => (
     <tr>
@@ -37,6 +40,10 @@ const TextInput = (props) => (
         </div>
     </div>
 )
+
+const cellEditProp = {
+    mode: 'click'
+};
 
 export class Team extends React.Component {
     constructor(props) {
@@ -81,7 +88,9 @@ componentDidMount() {
     render() {
 
         return (
+
             <div className="container">
+
                 <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
                     <TextInput
                         label="First Name"
@@ -100,11 +109,10 @@ componentDidMount() {
 
                 <form className="form-horizontal">
                     <br/>
-                    <StaffMemberTable>
-                        {this.state.members.map((members, index) => (
-                            <ProductyRow key={index} {...members}/>
-                        ))}
-                    </StaffMemberTable>
+                    <BootstrapTable data={this.state.members} cellEdit={cellEditProp}>
+                        <TableHeaderColumn dataField="name" width='50%' isKey={true}>First Name</TableHeaderColumn>
+                        <TableHeaderColumn dataField="surName">Last Name</TableHeaderColumn>
+                    </BootstrapTable>
                 </form>
             </div>
         );
