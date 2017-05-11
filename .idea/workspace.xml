@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bd64358d-db78-4497-813a-27d618393a2b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/components/menu.jsx" afterPath="$PROJECT_DIR$/src/app/components/menu.jsx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/pages/activities.jsx" afterPath="$PROJECT_DIR$/src/app/pages/activities.jsx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/pages/assignments.jsx" afterPath="$PROJECT_DIR$/src/app/pages/assignments.jsx" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/pages/team.jsx" afterPath="$PROJECT_DIR$/src/app/pages/team.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app/routes.jsx" afterPath="$PROJECT_DIR$/src/app/routes.jsx" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -48,8 +46,8 @@
       <file leaf-file-name="team.jsx" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/app/pages/team.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="382">
-              <caret line="55" column="32" lean-forward="true" selection-start-line="55" selection-start-column="32" selection-end-line="55" selection-end-column="32" />
+            <state relative-caret-position="447">
+              <caret line="175" column="68" lean-forward="true" selection-start-line="175" selection-start-column="68" selection-end-line="175" selection-end-column="68" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -60,8 +58,8 @@
       <file leaf-file-name="activities.jsx" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/app/pages/activities.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1009">
-              <caret line="132" column="20" lean-forward="false" selection-start-line="132" selection-start-column="20" selection-end-line="132" selection-end-column="20" />
+            <state relative-caret-position="-123">
+              <caret line="108" column="6" lean-forward="false" selection-start-line="108" selection-start-column="6" selection-end-line="108" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -70,8 +68,8 @@
       <file leaf-file-name="assignments.jsx" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/app/pages/assignments.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1260">
-              <caret line="85" column="11" lean-forward="true" selection-start-line="85" selection-start-column="11" selection-end-line="85" selection-end-column="11" />
+            <state relative-caret-position="447">
+              <caret line="176" column="39" lean-forward="true" selection-start-line="176" selection-start-column="39" selection-end-line="176" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -134,6 +132,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>getActivities</find>
+      <find>Activity</find>
     </findStrings>
     <replaceStrings>
       <replace>Assignments</replace>
@@ -460,12 +459,12 @@
       <workItem from="1493390898005" duration="473000" />
       <workItem from="1493391583383" duration="4773000" />
       <workItem from="1493734111817" duration="24000" />
-      <workItem from="1493734161072" duration="21430000" />
+      <workItem from="1493734161072" duration="22957000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30831000" />
+    <option name="totallyTimeSpent" value="32358000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="28" y="22" width="1351" height="878" extended-state="0" />
@@ -913,28 +912,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/pages/activities.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1009">
-          <caret line="132" column="20" lean-forward="false" selection-start-line="132" selection-start-column="20" selection-end-line="132" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/app/pages/team.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="55" column="32" lean-forward="true" selection-start-line="55" selection-start-column="32" selection-end-line="55" selection-end-column="32" />
+        <state relative-caret-position="447">
+          <caret line="175" column="68" lean-forward="true" selection-start-line="175" selection-start-column="68" selection-end-line="175" selection-end-column="68" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/pages/activities.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-123">
+          <caret line="108" column="6" lean-forward="false" selection-start-line="108" selection-start-column="6" selection-end-line="108" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/app/pages/assignments.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1260">
-          <caret line="85" column="11" lean-forward="true" selection-start-line="85" selection-start-column="11" selection-end-line="85" selection-end-column="11" />
+        <state relative-caret-position="447">
+          <caret line="176" column="39" lean-forward="true" selection-start-line="176" selection-start-column="39" selection-end-line="176" selection-end-column="39" />
           <folding />
         </state>
       </provider>

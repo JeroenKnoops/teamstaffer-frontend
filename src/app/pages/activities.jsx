@@ -4,9 +4,10 @@ import axios from 'axios';
 const ActivityRow = (props) => (
     <tr>
         <td>{props.activityName}</td>
-        <td>{props.projectNumber}</td>
+        <td>{props.idNumber}</td>
         <td>{props.domain}</td>
         <td>{props.phase}</td>
+        <td>{props.entryDate}</td>
     </tr>
 )
 
@@ -15,9 +16,10 @@ const ActivityTable = (props) => (
         <tbody>
         <tr>
             <th>Activity</th>
-            <th>ProjectNumber</th>
+            <th>IdNumber</th>
             <th>Domain</th>
             <th>Phase</th>
+            <th>Entry Date</th>
         </tr>
         {props.children}
         </tbody>
@@ -27,8 +29,10 @@ const ActivityTable = (props) => (
 const ProductyRow = (props) => (
     <tr>
         <td>{props.activityName}</td>
-        <td>{props.projectNumber}</td>
+        <td>{props.idNumber}</td>
         <td>{props.domain}</td>
+        <td>{props.phase}</td>
+        <td>{props.entryDate}</td>
         <td style={{backgroundColor: props.phase === 'concept' ? 'red' : 'transparent'}}>{props.phase}</td>
     </tr>
 )

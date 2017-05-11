@@ -1,23 +1,29 @@
 import React from 'react';
 import axios from 'axios';
 
-const ActivityRow = (props) => (
+const AssignmentsRow = (props) => (
     <tr>
+        <td>{props.userName}</td>
         <td>{props.activityName}</td>
-        <td>{props.projectNumber}</td>
-        <td>{props.domain}</td>
-        <td>{props.phase}</td>
+        <td>{props.commitment}</td>
+        <td>{props.fteAssignment}</td>
+        <td>{props.startAssignment}</td>
+        <td>{props.endAssignment}</td>
+        <td>{props.changeDate}</td>
     </tr>
 )
 
-const ActivityTable = (props) => (
+const AssignmentsTable = (props) => (
     <table className={"table table-striped"}>
         <tbody>
         <tr>
-            <th>Activity</th>
-            <th>ProjectNumber</th>
-            <th>Domain</th>
-            <th>Phase</th>
+            <th>User Name</th>
+            <th>Activity Name</th>
+            <th>Commitment</th>
+            <th>FTE assignment</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Change date</th>
         </tr>
         {props.children}
         </tbody>
@@ -26,9 +32,13 @@ const ActivityTable = (props) => (
 
 const ProductyRow = (props) => (
     <tr>
+        <td>{props.userName}</td>
         <td>{props.activityName}</td>
-        <td>{props.projectNumber}</td>
-        <td>{props.domain}</td>
+        <td>{props.commitment}</td>
+        <td>{props.fteAssignment}</td>
+        <td>{props.startAssignment}</td>
+        <td>{props.endAssignment}</td>
+        <td>{props.changeDate}</td>
         <td style={{backgroundColor: props.phase === 'concept' ? 'red' : 'transparent'}}>{props.phase}</td>
     </tr>
 )
@@ -122,7 +132,7 @@ export class Assignments extends React.Component {
                     <TextInput
                         label="Activity Name"
                         placeholder="Enter activity name"
-                        name="activiyName"
+                        name="activityName"
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <TextInput
@@ -160,11 +170,11 @@ export class Assignments extends React.Component {
 
                 <form className="form-horizontal">
                     <br/>
-                    <ActivityTable>
-                        {this.state.activities.map((activity, index) => (
-                            <ProductyRow key={index} {...activity}/>
+                    <AssignmentsTable>
+                        {this.state.assignments.map((assignment, index) => (
+                            <ProductyRow key={index} {...assignment}/>
                         ))}
-                    </ActivityTable>
+                    </AssignmentsTable>
                 </form>
             </div>
         );

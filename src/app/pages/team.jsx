@@ -5,9 +5,9 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 const StaffMemberRow = (props) => (
     <tr>
-        <td>{props.name}</td>
-        <td>{props.surName}</td>
-
+        <td>{props.userName}</td>
+        <td>{props.department}</td>
+        <td>{props.contractType}</td>
     </tr>
 )
 
@@ -15,8 +15,9 @@ const StaffMemberTable = (props) => (
     <table className={"table table-striped"}>
         <tbody>
         <tr>
-            <th>First name</th>
-            <th>Last Name</th>
+            <th>User name</th>
+            <th>Deparment</th>
+            <th>Contract type</th>
         </tr>
         {props.children}
         </tbody>
@@ -25,8 +26,9 @@ const StaffMemberTable = (props) => (
 
 const ProductyRow = (props) => (
     <tr>
-        <td>{props.name}</td>
-        <td>{props.surName}</td>
+        <td>{props.userName}</td>
+        <td>{props.department}</td>
+        <td>{props.contractType}</td>
     </tr>
 )
 
@@ -169,8 +171,9 @@ componentDidMount() {
                 <form className="form-horizontal">
                     <br/>
                     <BootstrapTable data={this.state.members} cellEdit={cellEditProp} insertRow={true}>
-                        <TableHeaderColumn dataField="name" width='50%' isKey={true}>First Name</TableHeaderColumn>
-                        <TableHeaderColumn dataField="surName">Last Name</TableHeaderColumn>
+                        <TableHeaderColumn dataField="userName" isKey={true}>User name</TableHeaderColumn>
+                        <TableHeaderColumn dataField="department" >Department</TableHeaderColumn>
+                        <TableHeaderColumn dataField="contractType" >Contract Type</TableHeaderColumn>
                     </BootstrapTable>
                 </form>
             </div>
