@@ -62,11 +62,11 @@ export class Assignments extends React.Component {
     constructor(props) {
         super(props)
         this.formData = {};
-        this.state = {activities: []};
+        this.state = {assignments: []};
     }
 
     componentDidMount() {
-        this.getActivities();
+        this.getAssignments();
     }
 
     handleInputChange(e) {
@@ -77,19 +77,19 @@ export class Assignments extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        let activities = this.state.activities;
+        let assignments = this.state.assignments;
 
-        axios.post('http://localhost:8080/api/staff/activity', this.formData, {timeout: 60000}).then(result => {
-            this.getActivities();
+        axios.post('http://localhost:8080/api/assignment', this.formData, {timeout: 60000}).then(result => {
+            this.getAssignments();
         }).catch(error => {
             console.log(error);
         });
     }
 
-    getActivities() {
+    getAssignments() {
 
-        axios.get('http://localhost:8080/api/staff/activity').then(result => {
-            this.setState({activities: result.data});
+        axios.get('http://localhost:8080/api/assignment').then(result => {
+            this.setState({assignments: result.data});
 
         }).catch(error => {
             console.log(error);
@@ -114,27 +114,45 @@ export class Assignments extends React.Component {
             <div className="container">
                 <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
                     <TextInput
+                        label="User Name"
+                        placeholder="Enter user name"
+                        name="userName"
+                        onChange={this.handleInputChange.bind(this)}
+                    />
+                    <TextInput
                         label="Activity Name"
                         placeholder="Enter activity name"
-                        name="activityName"
+                        name="activiyName"
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <TextInput
-                        label="Project Number"
-                        placeholder="Enter project Number"
-                        name="projectNumber"
+                        label="Commitment"
+                        placeholder="exploration, advance development, development"
+                        name="commitment"
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <TextInput
-                        label="Innovation Domain"
-                        placeholder="Enter innovation domain"
-                        name="domain"
+                        label="FTE allocation"
+                        placeholder="Enter allocation"
+                        name="fteAssignment"
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <TextInput
-                        label="Phase"
-                        placeholder="Enter activity phase"
-                        name="phase"
+                        label="Start date"
+                        placeholder="Enter start date"
+                        name="startAssignment"
+                        onChange={this.handleInputChange.bind(this)}
+                    />
+                    <TextInput
+                        label="End date"
+                        placeholder="Enter end date"
+                        name="endAssignment"
+                        onChange={this.handleInputChange.bind(this)}
+                    />
+                    <TextInput
+                        label="Change date"
+                        placeholder="Enter change date"
+                        name="changeDate"
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <input type="submit" className="btn btn-primary" value="Create activity"/>

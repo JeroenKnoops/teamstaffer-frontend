@@ -98,18 +98,6 @@ export class Activities extends React.Component {
 
     render() {
 
-        // let rows = this.state.activities.map((d, i) => {
-        //     return (
-        //         <tr key={i}>
-        //             <td>{d.activityName}</td>
-        //             <td>{d.projectNumber}</td>
-        //             <td>{d.domain}</td>
-        //             <td>{d.phase}</td>
-        //         </tr>
-        //     );
-        // });
-
-
         return (
             <div className="container">
                 <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
@@ -120,14 +108,14 @@ export class Activities extends React.Component {
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <TextInput
-                        label="Project Number"
-                        placeholder="Enter project Number"
-                        name="projectNumber"
+                        label="Id Number"
+                        placeholder="Id Number"
+                        name="idNumber"
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <TextInput
-                        label="Innovation Domain"
-                        placeholder="Enter innovation domain"
+                        label="Domain"
+                        placeholder="Enter domain"
                         name="domain"
                         onChange={this.handleInputChange.bind(this)}
                     />
@@ -136,6 +124,12 @@ export class Activities extends React.Component {
                         placeholder="Enter activity phase"
                         name="phase"
                         onChange={this.handleInputChange.bind(this)}
+                    />
+                    <TextInput
+                    label="Entry Date"
+                    placeholder="Entry date"
+                    name="entryDate"
+                    onChange={this.handleInputChange.bind(this)}
                     />
                     <input type="submit" className="btn btn-primary" value="Create activity"/>
                 </form>
