@@ -46,7 +46,7 @@ const cellEditProp = {
     mode: 'click'
 };
 
-export class Team extends React.Component {
+export class StaffMember extends React.Component {
     constructor(props) {
         super(props)
         this.formData = {};

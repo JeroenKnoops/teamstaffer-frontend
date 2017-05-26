@@ -26,7 +26,7 @@ export class Menu extends React.Component {
                 <Navbar.Collapse>
                 <Nav>
                     <NavItem eventKey={1} onClick={this.hrefClick.bind(this)} href="/activities">Activities</NavItem>
-                    <NavItem eventKey={2} onClick={this.hrefClick.bind(this)} href="/team">Team</NavItem>
+                    <NavItem eventKey={2} onClick={this.hrefClick.bind(this)} href="/staffmembers">Staff Members</NavItem>
                     <NavItem eventKey={3} onClick={this.hrefClick.bind(this)} href="/assignments">Assignments</NavItem>
                     <NavItem eventKey={4} onClick={this.hrefClick.bind(this)} href="/charts">Charts</NavItem>
 
