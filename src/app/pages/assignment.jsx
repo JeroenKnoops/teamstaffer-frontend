@@ -68,7 +68,7 @@ const TextInput = (props) => (
 //     }
 // }
 
-export class Assignments extends React.Component {
+export class Assignment extends React.Component {
     constructor(props) {
         super(props)
         this.formData = {};

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Router , Route, IndexRoute, hashHistory} from 'react-router';
 import { Root } from './root';
-import { Activities } from './pages/activities';
-import { Assignments } from './pages/assignments';
-import { Team } from './pages/team';
+import { Activity } from './pages/activity';
+import { Assignment } from './pages/assignment';
+import { StaffMember } from './pages/staffmember';
 import { Charts } from './pages/charts';
 
 export class Routes extends React.Component {
@@ -26,10 +26,10 @@ export class Routes extends React.Component {
         return (
             <Router history={hashHistory} >
                 <Route router={Router} path="/" component={Root} >
-                    <Route path="/activities" component={Activities} />
-                    <Route path="/team" component={Team} />
+                    <Route path="/activity" component={Activity} />
+                    <Route path="/staffmember" component={StaffMember} />
                     <Route path="/charts" component={Charts} />
-                    <Route path="/assignments" component={Assignments} />
+                    <Route path="/assignmenta" component={Assignment} />
                 </Route>
             </Router>
         );

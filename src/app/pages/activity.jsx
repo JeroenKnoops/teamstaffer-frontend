@@ -62,7 +62,7 @@ const TextInput = (props) => (
 //     }
 // }
 
-export class Activities extends React.Component {
+export class Activity extends React.Component {
     constructor(props) {
         super(props)
         this.formData = {};
