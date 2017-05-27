@@ -46,6 +46,20 @@ const TextInput = (props) => (
         </div>
     </div>
 )
+
+const SelectInput = (props) => (
+    <div className="form-group">
+        <label className="control-label col-sm-2" for="activityName">{props.label}:</label>
+        <div className="col-sm-10">
+            <select type="text" name={props.name} className="form-control" id={props.name}
+                   placeholder={props.placeholder} onChange={props.onChange}>
+                        <option>exploration</option>
+                        <option>advance development</option>
+                        <option>development</option>
+            </select>
+        </div>
+    </div>
+)
 //
 //
 // class TextInput extends React.Component{
@@ -123,7 +137,7 @@ export class Activity extends React.Component {
                         name="domain"
                         onChange={this.handleInputChange.bind(this)}
                     />
-                    <TextInput
+                    <SelectInput
                         label="Phase"
                         placeholder="Enter activity phase"
                         name="phase"
