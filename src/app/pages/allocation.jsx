@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-const AssignmentsRow = (props) => (
+const AllocationsRow = (props) => (
     <tr>
         <td>{props.userName}</td>
         <td>{props.activityName}</td>
@@ -13,14 +13,14 @@ const AssignmentsRow = (props) => (
     </tr>
 )
 
-const AssignmentsTable = (props) => (
+const AllocationsTable = (props) => (
     <table className={"table table-striped"}>
         <tbody>
         <tr>
             <th>User Name</th>
             <th>Activity Name</th>
             <th>Commitment</th>
-            <th>FTE assignment</th>
+            <th>FTE allocation</th>
             <th>Start date</th>
             <th>End date</th>
             <th>Change date</th>
@@ -68,15 +68,15 @@ const TextInput = (props) => (
 //     }
 // }
 
-export class Assignment extends React.Component {
+export class Allocation extends React.Component {
     constructor(props) {
         super(props)
         this.formData = {};
-        this.state = {assignments: []};
+        this.state = {allocations: []};
     }
 
     componentDidMount() {
-        this.getAssignments();
+        this.getAllocations();
     }
 
     handleInputChange(e) {
@@ -87,19 +87,19 @@ export class Assignment extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        let assignments = this.state.assignments;
+        let allocations = this.state.allocations;
 
         axios.post('http://localhost:8080/api/assignment', this.formData, {timeout: 60000}).then(result => {
-            this.getAssignments();
+            this.getAllocations();
         }).catch(error => {
             console.log(error);
         });
     }
 
-    getAssignments() {
+    getAllocations() {
 
         axios.get('http://localhost:8080/api/assignment').then(result => {
-            this.setState({assignments: result.data});
+            this.setState({allocations: result.data});
 
         }).catch(error => {
             console.log(error);
@@ -107,17 +107,6 @@ export class Assignment extends React.Component {
     }
 
     render() {
-
-        // let rows = this.state.activities.map((d, i) => {
-        //     return (
-        //         <tr key={i}>
-        //             <td>{d.activityName}</td>
-        //             <td>{d.projectNumber}</td>
-        //             <td>{d.domain}</td>
-        //             <td>{d.phase}</td>
-        //         </tr>
-        //     );
-        // });
 
 
         return (
@@ -170,11 +159,11 @@ export class Assignment extends React.Component {
 
                 <form className="form-horizontal">
                     <br/>
-                    <AssignmentsTable>
-                        {this.state.assignments.map((assignment, index) => (
-                            <ProductyRow key={index} {...assignment}/>
+                    <AllocationsTable>
+                        {this.state.allocations.map((allocation, index) => (
+                            <ProductyRow key={index} {...allocation}/>
                         ))}
-                    </AssignmentsTable>
+                    </AllocationsTable>
                 </form>
             </div>
         );

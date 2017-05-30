@@ -2,7 +2,8 @@ import React from 'react';
 import { Router , Route, IndexRoute, hashHistory} from 'react-router';
 import { Root } from './root';
 import { Activity } from './pages/activity';
-import { Assignment } from './pages/assignment';
+import { Allocation } from './pages/allocation';
+import { Availability } from './pages/availability';
 import { StaffMember } from './pages/staffmember';
 import { Charts } from './pages/charts';
 
@@ -29,7 +30,8 @@ export class Routes extends React.Component {
                     <Route path="/activity" component={Activity} />
                     <Route path="/staffmember" component={StaffMember} />
                     <Route path="/charts" component={Charts} />
-                    <Route path="/assignmenta" component={Assignment} />
+                    <Route path="/allocation" component={Allocation} />
+                    <Route path="/availability" component={Availability} />
                 </Route>
             </Router>
         );

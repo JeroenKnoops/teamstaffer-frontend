@@ -3,7 +3,7 @@ import axios from 'axios';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 
-const StaffMemberRow = (props) => (
+const AvailabilityRow = (props) => (
     <tr>
         <td>{props.userName}</td>
         <td>{props.department}</td>
@@ -11,7 +11,7 @@ const StaffMemberRow = (props) => (
     </tr>
 )
 
-const StaffMemberTable = (props) => (
+const AvailabilityTable = (props) => (
     <table className={"table table-striped"}>
         <tbody>
         <tr>
@@ -46,7 +46,7 @@ const cellEditProp = {
     mode: 'click'
 };
 
-export class StaffMember extends React.Component {
+export class Availability extends React.Component {
     constructor(props) {
         super(props)
         this.formData = {};
@@ -54,7 +54,8 @@ export class StaffMember extends React.Component {
     }
 
 componentDidMount() {
-    this.getStaffMembers();
+    this.getAvailabilities();
+    this.getStaffAvailability();
 }
 
     handleInputChange(e) {
@@ -68,13 +69,13 @@ componentDidMount() {
         let members = this.state.members;
 
         axios.post('http://localhost:8080/api/staff/member', this.formData, {timeout: 60000}).then(result => {
-            this.getStaffMembers();
+            this.getAvailabilities();
         }).catch(error => {
             console.log(error);
         });
     }
 
-    getStaffMembers() {
+    getAvailabilities() {
 
         axios.get('http://localhost:8080/api/staff/member').then(result => {
             this.setState({members: result.data});
@@ -84,34 +85,67 @@ componentDidMount() {
         });
     }
 
+    handleInputAvailabilityChange(e) {
+        let id = e.target.getAttribute('id');
+        this.formData[id] = e.target.value;
+    }
+
+    handleSubmitAvailability(e) {
+        e.preventDefault();
+
+        let avail = this.state.avail;
+
+        axios.post('http://localhost:8080/api/availability', this.formData, {timeout: 60000}).then(result => {
+            this.getStaffAvailability();
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    getStaffAvailability() {
+
+        axios.get('http://localhost:8080/api/availability').then(result => {
+            this.setState({avail: result.data});
+
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+
     render() {
 
         return (
 
             <div className="container">
 
-                <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
+                <form className="form-horizontal" onSubmit={this.handleSubmitAvailability.bind(this)}>
                     <TextInput
                         label="User Name"
                         placeholder="User name"
                         name="userName"
-                        onChange={this.handleInputChange.bind(this)}
+                        onChange={this.handleInputAvailabilityChange.bind(this)}
                     />
                     <TextInput
-                        label="Department"
-                        placeholder="Enter department"
-                        name="department"
-                        onChange={this.handleInputChange.bind(this)}
+                        label="Availability"
+                        placeholder="Enter FTE availability"
+                        name="fteAvailability"
+                        onChange={this.handleInputAvailabilityChange.bind(this)}
                     />
                     <TextInput
-                        label="Contract Type"
-                        placeholder="Enter contract type"
-                        name="contractType"
-                        onChange={this.handleInputChange.bind(this)}
+                        label="Start date"
+                        placeholder="Enter start date"
+                        name="startDate"
+                        onChange={this.handleInputAvailabilityChange.bind(this)}
                     />
-                    <input type="submit" className="btn btn-primary" value="Create staff member"/>
+                    <TextInput
+                        label="End date"
+                        placeholder="Enter end date"
+                        name="endDate"
+                        onChange={this.handleInputAvailabilityChange.bind(this)}
+                    />
+                    <input type="submit" className="btn btn-primary" value="Add availability"/>
                 </form>
-
                 <form className="form-horizontal">
                     <br/>
                     <BootstrapTable data={this.state.members} cellEdit={cellEditProp} insertRow={true}>
