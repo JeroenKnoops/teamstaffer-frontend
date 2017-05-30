@@ -4,10 +4,10 @@ import axios from 'axios';
 const ActivityRow = (props) => (
     <tr>
         <td>{props.activityName}</td>
-        <td>{props.idNumber}</td>
+        <td>{props.activityNumber}</td>
         <td>{props.domain}</td>
         <td>{props.phase}</td>
-        <td>{props.entryDate}</td>
+        <td>{props.changeDate}</td>
     </tr>
 )
 
@@ -16,10 +16,10 @@ const ActivityTable = (props) => (
         <tbody>
         <tr>
             <th>Activity</th>
-            <th>IdNumber</th>
+            <th>Activity Number</th>
             <th>Domain</th>
             <th>Phase</th>
-            <th>Entry Date</th>
+            <th>Change Date</th>
         </tr>
         {props.children}
         </tbody>
@@ -29,10 +29,10 @@ const ActivityTable = (props) => (
 const ProductyRow = (props) => (
     <tr>
         <td>{props.activityName}</td>
-        <td>{props.idNumber}</td>
+        <td>{props.activityNumber}</td>
         <td>{props.domain}</td>
         <td>{props.phase}</td>
-        <td>{props.entryDate}</td>
+        <td>{props.changeDate}</td>
         <td style={{backgroundColor: props.phase === 'concept' ? 'red' : 'transparent'}}>{props.phase}</td>
     </tr>
 )
@@ -60,21 +60,6 @@ const SelectInput = (props) => (
         </div>
     </div>
 )
-//
-//
-// class TextInput extends React.Component{
-//     render(){
-//         return (
-//             <div className="form-group">
-//                 <label className="control-label col-sm-2" for="activityName">{props.label}:</label>
-//                 <div className="col-sm-10">
-//                     <input type="text" name={props.name} className="form-control" id={props.name}
-//                            placeholder={props.placeholder} onChange={props.onChange}/>
-//                 </div>
-//             </div>
-//         )
-//     }
-// }
 
 export class Activity extends React.Component {
     constructor(props) {
@@ -126,9 +111,9 @@ export class Activity extends React.Component {
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <TextInput
-                        label="Id Number"
-                        placeholder="Id Number"
-                        name="idNumber"
+                        label="Activity Number"
+                        placeholder="Activity Number"
+                        name="activityNumber"
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <TextInput
@@ -144,10 +129,10 @@ export class Activity extends React.Component {
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <TextInput
-                    label="Entry Date"
-                    placeholder="Entry date"
-                    name="entryDate"
-                    onChange={this.handleInputChange.bind(this)}
+                        label="Change Date"
+                        placeholder="Change date"
+                        name="changeDate"
+                        onChange={this.handleInputChange.bind(this)}
                     />
                     <input type="submit" className="btn btn-primary" value="Create activity"/>
                 </form>
