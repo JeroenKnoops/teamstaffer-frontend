@@ -3,35 +3,6 @@ import axios from 'axios';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 
-const StaffMemberRow = (props) => (
-    <tr>
-        <td>{props.userName}</td>
-        <td>{props.department}</td>
-        <td>{props.contractType}</td>
-    </tr>
-)
-
-const StaffMemberTable = (props) => (
-    <table className={"table table-striped"}>
-        <tbody>
-        <tr>
-            <th>User name</th>
-            <th>Deparment</th>
-            <th>Contract type</th>
-        </tr>
-        {props.children}
-        </tbody>
-    </table>
-)
-
-const ProductyRow = (props) => (
-    <tr>
-        <td>{props.userName}</td>
-        <td>{props.department}</td>
-        <td>{props.contractType}</td>
-    </tr>
-)
-
 const TextInput = (props) => (
     <div className="form-group">
         <label className="control-label col-sm-2" for="name">{props.label}:</label>
@@ -42,19 +13,33 @@ const TextInput = (props) => (
     </div>
 )
 
+const SelectInput = (props) => (
+    <div className="form-group">
+        <label className="control-label col-sm-2" for="">{props.label}:</label>
+        <div className="col-sm-10">
+            <select type="text" name={props.name} className="form-control" id={props.name}
+                   placeholder={props.placeholder} onChange={props.onChange}>
+                        <option>Payroll</option>
+                        <option>Contractor</option>
+                        <option>Student</option>
+            </select>
+        </div>
+    </div>
+)
+
 const cellEditProp = {
     mode: 'click'
 };
 
-export class StaffMember extends React.Component {
+export class TeamMember extends React.Component {
     constructor(props) {
         super(props)
         this.formData = {};
-        this.state = {members: [], avail: []};
+        this.state = {teamMembers: []};
     }
 
 componentDidMount() {
-    this.getStaffMembers();
+    this.getTeamMembers();
 }
 
     handleInputChange(e) {
@@ -65,19 +50,19 @@ componentDidMount() {
     handleSubmit(e) {
         e.preventDefault();
 
-        let members = this.state.members;
+        let teamMembers = this.state.teamMembers;
 
         axios.post('http://localhost:8080/api/staff/member', this.formData, {timeout: 60000}).then(result => {
-            this.getStaffMembers();
+            this.getTeamMembers();
         }).catch(error => {
             console.log(error);
         });
     }
 
-    getStaffMembers() {
+    getTeamMembers() {
 
         axios.get('http://localhost:8080/api/staff/member').then(result => {
-            this.setState({members: result.data});
+            this.setState({teamMembers: result.data});
 
         }).catch(error => {
             console.log(error);
@@ -103,7 +88,7 @@ componentDidMount() {
                         name="department"
                         onChange={this.handleInputChange.bind(this)}
                     />
-                    <TextInput
+                    <SelectInput
                         label="Contract Type"
                         placeholder="Enter contract type"
                         name="contractType"
@@ -114,10 +99,10 @@ componentDidMount() {
 
                 <form className="form-horizontal">
                     <br/>
-                    <BootstrapTable data={this.state.members} cellEdit={cellEditProp} insertRow={true}>
-                        <TableHeaderColumn dataField="userName" isKey={true}>User name</TableHeaderColumn>
-                        <TableHeaderColumn dataField="department" >Department</TableHeaderColumn>
-                        <TableHeaderColumn dataField="contractType" >Contract Type</TableHeaderColumn>
+                    <BootstrapTable data={this.state.teamMembers} cellEdit={cellEditProp}>
+                        <TableHeaderColumn dataField="userName" isKey={true} width="33%">User name</TableHeaderColumn>
+                        <TableHeaderColumn dataField="department" width="33%">Department</TableHeaderColumn>
+                        <TableHeaderColumn dataField="contractType" width="33%">Contract Type</TableHeaderColumn>
                     </BootstrapTable>
                 </form>
             </div>

@@ -4,7 +4,7 @@ import { Root } from './root';
 import { Activity } from './pages/activity';
 import { Allocation } from './pages/allocation';
 import { Availability } from './pages/availability';
-import { StaffMember } from './pages/staffmember';
+import { TeamMember } from './pages/teammember';
 import { Charts } from './pages/charts';
 
 export class Routes extends React.Component {
@@ -28,7 +28,7 @@ export class Routes extends React.Component {
             <Router history={hashHistory} >
                 <Route router={Router} path="/" component={Root} >
                     <Route path="/activity" component={Activity} />
-                    <Route path="/staffmember" component={StaffMember} />
+                    <Route path="/teammember" component={TeamMember} />
                     <Route path="/charts" component={Charts} />
                     <Route path="/allocation" component={Allocation} />
                     <Route path="/availability" component={Availability} />

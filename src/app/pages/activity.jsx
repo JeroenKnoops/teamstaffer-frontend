@@ -1,41 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-
-const ActivityRow = (props) => (
-    <tr>
-        <td>{props.activityName}</td>
-        <td>{props.activityNumber}</td>
-        <td>{props.domain}</td>
-        <td>{props.phase}</td>
-        <td>{props.changeDate}</td>
-    </tr>
-)
-
-const ActivityTable = (props) => (
-    <table className={"table table-striped"}>
-        <tbody>
-        <tr>
-            <th>Activity</th>
-            <th>Activity Number</th>
-            <th>Domain</th>
-            <th>Phase</th>
-            <th>Change Date</th>
-        </tr>
-        {props.children}
-        </tbody>
-    </table>
-)
-
-const ProductyRow = (props) => (
-    <tr>
-        <td>{props.activityName}</td>
-        <td>{props.activityNumber}</td>
-        <td>{props.domain}</td>
-        <td>{props.phase}</td>
-        <td>{props.changeDate}</td>
-        <td style={{backgroundColor: props.phase === 'concept' ? 'red' : 'transparent'}}>{props.phase}</td>
-    </tr>
-)
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 const TextInput = (props) => (
     <div className="form-group">
@@ -53,13 +18,17 @@ const SelectInput = (props) => (
         <div className="col-sm-10">
             <select type="text" name={props.name} className="form-control" id={props.name}
                    placeholder={props.placeholder} onChange={props.onChange}>
-                        <option>exploration</option>
-                        <option>advance development</option>
-                        <option>development</option>
+                        <option>Exploration</option>
+                        <option>Concept</option>
+                        <option>Development</option>
             </select>
         </div>
     </div>
 )
+
+const cellEditProp = {
+    mode: 'click'
+};
 
 export class Activity extends React.Component {
     constructor(props) {
@@ -139,11 +108,13 @@ export class Activity extends React.Component {
 
                 <form className="form-horizontal">
                     <br/>
-                    <ActivityTable>
-                        {this.state.activities.map((activity, index) => (
-                            <ProductyRow key={index} {...activity}/>
-                        ))}
-                    </ActivityTable>
+                    <BootstrapTable data={this.state.activities} cellEdit={cellEditProp}>
+                        <TableHeaderColumn dataField="activityName" isKey={true} width="20%">Activity Name</TableHeaderColumn>
+                        <TableHeaderColumn dataField="activityNumber" width="20%" >Activity Number</TableHeaderColumn>
+                        <TableHeaderColumn dataField="domain" width="20%" >Domain</TableHeaderColumn>
+                        <TableHeaderColumn dataField="phase" width="20%" >Phase</TableHeaderColumn>
+                        <TableHeaderColumn dataField="changeDate" width="20%" >Change Date</TableHeaderColumn>
+                    </BootstrapTable>
                 </form>
             </div>
         );
