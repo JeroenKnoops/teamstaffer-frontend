@@ -2,42 +2,26 @@ import React from 'react';
 import axios from 'axios';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
-
-const AvailabilityRow = (props) => (
-    <tr>
-        <td>{props.userName}</td>
-        <td>{props.department}</td>
-        <td>{props.contractType}</td>
-    </tr>
-)
-
-const AvailabilityTable = (props) => (
-    <table className={"table table-striped"}>
-        <tbody>
-        <tr>
-            <th>User name</th>
-            <th>Deparment</th>
-            <th>Contract type</th>
-        </tr>
-        {props.children}
-        </tbody>
-    </table>
-)
-
-const ProductyRow = (props) => (
-    <tr>
-        <td>{props.userName}</td>
-        <td>{props.department}</td>
-        <td>{props.contractType}</td>
-    </tr>
-)
-
 const TextInput = (props) => (
     <div className="form-group">
         <label className="control-label col-sm-2" for="name">{props.label}:</label>
         <div className="col-sm-10">
             <input type="text" name={props.name} className="form-control" id={props.name}
                    placeholder={props.placeholder} onChange={props.onChange}/>
+        </div>
+    </div>
+)
+
+const SelectInput = (props) => (
+    <div className="form-group">
+        <label className="control-label col-sm-2" for="activityName">{props.label}:</label>
+        <div className="col-sm-10">
+            <select type="text" name={props.name} className="form-control" id={props.name}
+                   placeholder={props.placeholder} onChange={props.onChange}>
+                        <option>rholdorp</option>
+                        <option>jan</option>
+                        <option>piet</option>
+            </select>
         </div>
     </div>
 )
@@ -50,12 +34,15 @@ export class Availability extends React.Component {
     constructor(props) {
         super(props)
         this.formData = {};
-        this.state = {members: [], avail: []};
+        this.state = {
+            teamMembers: [], 
+            availability: []
+        };
     }
 
 componentDidMount() {
-    this.getAvailabilities();
-    this.getStaffAvailability();
+    this.getAvailability();
+    this.getTeamMembers();
 }
 
     handleInputChange(e) {
@@ -66,52 +53,34 @@ componentDidMount() {
     handleSubmit(e) {
         e.preventDefault();
 
-        let members = this.state.members;
-
-        axios.post('http://localhost:8080/api/staff/member', this.formData, {timeout: 60000}).then(result => {
-            this.getAvailabilities();
-        }).catch(error => {
-            console.log(error);
-        });
-    }
-
-    getAvailabilities() {
-
-        axios.get('http://localhost:8080/api/staff/member').then(result => {
-            this.setState({members: result.data});
-
-        }).catch(error => {
-            console.log(error);
-        });
-    }
-
-    handleInputAvailabilityChange(e) {
-        let id = e.target.getAttribute('id');
-        this.formData[id] = e.target.value;
-    }
-
-    handleSubmitAvailability(e) {
-        e.preventDefault();
-
-        let avail = this.state.avail;
+        let availability = this.state.availablity;
 
         axios.post('http://localhost:8080/api/availability', this.formData, {timeout: 60000}).then(result => {
-            this.getStaffAvailability();
+            this.getAvailability();
         }).catch(error => {
             console.log(error);
         });
     }
 
-    getStaffAvailability() {
+    getAvailability() {
 
         axios.get('http://localhost:8080/api/availability').then(result => {
-            this.setState({avail: result.data});
+            this.setState({availability: result.data});
 
         }).catch(error => {
             console.log(error);
         });
     }
 
+    getTeamMembers() {
+
+        axios.get('http://localhost:8080/api/staff/member').then(result => {
+            this.setState({teamMembers: result.data});
+
+        }).catch(error => {
+            console.log(error);
+        });
+    }
 
     render() {
 
@@ -119,39 +88,40 @@ componentDidMount() {
 
             <div className="container">
 
-                <form className="form-horizontal" onSubmit={this.handleSubmitAvailability.bind(this)}>
-                    <TextInput
+                <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
+                    <SelectInput
                         label="User Name"
                         placeholder="User name"
                         name="userName"
-                        onChange={this.handleInputAvailabilityChange.bind(this)}
+                        onChange={this.handleInputChange.bind(this)}
                     />
                     <TextInput
                         label="Availability"
                         placeholder="Enter FTE availability"
                         name="fteAvailability"
-                        onChange={this.handleInputAvailabilityChange.bind(this)}
+                        onChange={this.handleInputChange.bind(this)}
                     />
                     <TextInput
                         label="Start date"
                         placeholder="Enter start date"
                         name="startDate"
-                        onChange={this.handleInputAvailabilityChange.bind(this)}
+                        onChange={this.handleInputChange.bind(this)}
                     />
                     <TextInput
                         label="End date"
                         placeholder="Enter end date"
                         name="endDate"
-                        onChange={this.handleInputAvailabilityChange.bind(this)}
+                        onChange={this.handleInputChange.bind(this)}
                     />
                     <input type="submit" className="btn btn-primary" value="Add availability"/>
                 </form>
                 <form className="form-horizontal">
                     <br/>
-                    <BootstrapTable data={this.state.members} cellEdit={cellEditProp} insertRow={true}>
-                        <TableHeaderColumn dataField="userName" isKey={true}>User name</TableHeaderColumn>
-                        <TableHeaderColumn dataField="department" >Department</TableHeaderColumn>
-                        <TableHeaderColumn dataField="contractType" >Contract Type</TableHeaderColumn>
+                    <BootstrapTable data={this.state.availability} cellEdit={cellEditProp}>
+                        <TableHeaderColumn dataField="userName" isKey={true} width="25%">User name</TableHeaderColumn>
+                        <TableHeaderColumn dataField="fteAvailability" width="25%" >% Availability</TableHeaderColumn>
+                        <TableHeaderColumn dataField="startDate" width="25%" >Start date</TableHeaderColumn>
+                        <TableHeaderColumn dataField="endDate" width="25%" >End date</TableHeaderColumn>
                     </BootstrapTable>
                 </form>
             </div>
