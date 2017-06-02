@@ -18,13 +18,12 @@ const SelectInput = (props) => (
         <div className="col-sm-10">
             <select type="text" name={props.name} className="form-control" id={props.name}
                    placeholder={props.placeholder} onChange={props.onChange}>
-                        <option>rholdorp</option>
-                        <option>jan</option>
-                        <option>piet</option>
+                   {props.options}     
             </select>
         </div>
     </div>
 )
+
 
 const cellEditProp = {
     mode: 'click'
@@ -83,19 +82,26 @@ componentDidMount() {
     }
 
     render() {
+       
+        const options = this.state.teamMembers.map((teamMember) => {
+            return (<option>
+                {teamMember.userName}
+                </option>)
+        });
 
         return (
 
             <div className="container">
 
                 <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
-                    <SelectInput
+                   <SelectInput
                         label="User Name"
-                        placeholder="User name"
+                        placeholder="Enter user name"
                         name="userName"
+                        options={options}
                         onChange={this.handleInputChange.bind(this)}
                     />
-                    <TextInput
+                   <TextInput
                         label="Availability"
                         placeholder="Enter FTE availability"
                         name="fteAvailability"
