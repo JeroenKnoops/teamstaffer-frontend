@@ -19,13 +19,14 @@ const SelectInput = (props) => (
         <div className="col-sm-10">
             <select type="text" name={props.name} className="form-control" id={props.name}
                    placeholder={props.placeholder} onChange={props.onChange}>
-                        <option>Payroll</option>
-                        <option>Contractor</option>
-                        <option>Student</option>
+                   <option>select {props.placeholder}</option>
+                   {props.options}     
             </select>
         </div>
     </div>
 )
+
+const contractTypes = ["Payroll","Contractor","Student"];
 
 const cellEditProp = {
     mode: 'click'
@@ -70,6 +71,12 @@ componentDidMount() {
     }
 
     render() {
+        
+        const contractTypeOptions = contractTypes.map((contractType) => {
+            return (<option>
+                {contractType}
+                </option>)
+        });
 
         return (
 
@@ -90,7 +97,8 @@ componentDidMount() {
                     />
                     <SelectInput
                         label="Contract Type"
-                        placeholder="Enter contract type"
+                        options={contractTypeOptions}
+                        placeholder="contract type"
                         name="contractType"
                         onChange={this.handleInputChange.bind(this)}
                     />

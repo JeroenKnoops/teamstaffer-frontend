@@ -14,13 +14,12 @@ const TextInput = (props) => (
 
 const SelectInput = (props) => (
     <div className="form-group">
-        <label className="control-label col-sm-2" for="activityName">{props.label}:</label>
+        <label className="control-label col-sm-2" for="">{props.label}:</label>
         <div className="col-sm-10">
             <select type="text" name={props.name} className="form-control" id={props.name}
                    placeholder={props.placeholder} onChange={props.onChange}>
-                        <option>Exploration</option>
-                        <option>Concept</option>
-                        <option>Development</option>
+                   <option>select {props.placeholder}</option>
+                   {props.options}     
             </select>
         </div>
     </div>
@@ -29,6 +28,8 @@ const SelectInput = (props) => (
 const cellEditProp = {
     mode: 'click'
 };
+
+const phaseTypes = ["Exploration","Concept","Development"];
 
 export class Activity extends React.Component {
     constructor(props) {
@@ -69,6 +70,11 @@ export class Activity extends React.Component {
     }
 
     render() {
+       const phaseTypeOptions = phaseTypes.map((phaseType) => {
+            return (<option>
+                {phaseType}
+                </option>)
+        });
 
         return (
             <div className="container">
@@ -93,7 +99,8 @@ export class Activity extends React.Component {
                     />
                     <SelectInput
                         label="Phase"
-                        placeholder="Enter activity phase"
+                        options={phaseTypeOptions}
+                        placeholder="activity phase"
                         name="phase"
                         onChange={this.handleInputChange.bind(this)}
                     />

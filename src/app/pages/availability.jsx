@@ -14,10 +14,11 @@ const TextInput = (props) => (
 
 const SelectInput = (props) => (
     <div className="form-group">
-        <label className="control-label col-sm-2" for="activityName">{props.label}:</label>
+        <label className="control-label col-sm-2" for="">{props.label}:</label>
         <div className="col-sm-10">
             <select type="text" name={props.name} className="form-control" id={props.name}
                    placeholder={props.placeholder} onChange={props.onChange}>
+                   <option>select {props.placeholder}</option>
                    {props.options}     
             </select>
         </div>
@@ -96,7 +97,7 @@ componentDidMount() {
                 <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
                    <SelectInput
                         label="User Name"
-                        placeholder="Enter user name"
+                        placeholder="user name"
                         name="userName"
                         options={options}
                         onChange={this.handleInputChange.bind(this)}

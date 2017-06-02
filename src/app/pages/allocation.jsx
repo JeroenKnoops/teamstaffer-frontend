@@ -19,27 +19,37 @@ const SelectInput = (props) => (
         <div className="col-sm-10">
             <select type="text" name={props.name} className="form-control" id={props.name}
                    placeholder={props.placeholder} onChange={props.onChange}>
-                        <option>Lead</option>
-                        <option>Expected</option>
-                        <option>Committed</option>
+                   <option>select {props.placeholder}</option>
+                   {props.options}     
             </select>
         </div>
     </div>
 )
 
+
 const cellEditProp = {
     mode: 'click'
 };
+
+const commitments = ["Lead","Expectation","Committed"];
 
 export class Allocation extends React.Component {
     constructor(props) {
         super(props)
         this.formData = {};
-        this.state = {allocations: []};
+        this.state = {
+            allocations: [],
+            activities: [],
+            teamMembers: [],
+            availabilities: []
+        };
     }
 
     componentDidMount() {
         this.getAllocations();
+        this.getActivities();
+        this.getTeamMembers();
+        this.getAvailability();
     }
 
     handleInputChange(e) {
@@ -69,27 +79,79 @@ export class Allocation extends React.Component {
         });
     }
 
+    getAvailability() {
+
+        axios.get('http://localhost:8080/api/availability').then(result => {
+            this.setState({availabilities: result.data});
+
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    getTeamMembers() {
+
+        axios.get('http://localhost:8080/api/staff/member').then(result => {
+            this.setState({teamMembers: result.data});
+
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
+    getActivities() {
+
+        axios.get('http://localhost:8080/api/staff/activity').then(result => {
+            this.setState({activities: result.data});
+
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
     render() {
 
+        const userNameOptions = this.state.teamMembers.map((teamMember) => {
+            return (<option>
+                {teamMember.userName}
+                </option>)
+        });
+
+        const activityOptions = this.state.activities.map((activity) => {
+            return (<option>
+                {activity.activityName}
+                </option>)
+        });
+
+        const commitmentOptions = commitments.map((commitment) => {
+            return (<option>
+                {commitment}
+                </option>)
+        });
+
+        
 
         return (
             <div className="container">
                 <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
-                    <TextInput
+                    <SelectInput
                         label="User Name"
-                        placeholder="Enter user name"
+                        options={userNameOptions}
+                        placeholder="user name"
                         name="userName"
                         onChange={this.handleInputChange.bind(this)}
                     />
-                    <TextInput
+                    <SelectInput
                         label="Activity Name"
-                        placeholder="Enter activity name"
+                        options={activityOptions}
+                        placeholder="activity name"
                         name="activityName"
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <SelectInput
                         label="Commitment"
-                        placeholder=""
+                        placeholder="commitment level"
+                        options={commitmentOptions}
                         name="commitment"
                         onChange={this.handleInputChange.bind(this)}
                     />
@@ -125,7 +187,7 @@ export class Allocation extends React.Component {
                             <TableHeaderColumn dataField="userName" isKey={true} width="14.3%">User name</TableHeaderColumn>
                             <TableHeaderColumn dataField="activityName" width="14.3%" >Activity name</TableHeaderColumn>
                             <TableHeaderColumn dataField="commitment" width="14.3%" >Commitment</TableHeaderColumn>
-                            <TableHeaderColumn dataField="fteAllocation" width="14.3%">Allocation(FTE)</TableHeaderColumn>
+                            <TableHeaderColumn dataField="fteAssignment" width="14.3%">Allocation(FTE)</TableHeaderColumn>
                             <TableHeaderColumn dataField="startAssignment" width="14.3%" >Start of Assignment</TableHeaderColumn>
                             <TableHeaderColumn dataField="endAssignment" width="14.3%" >End of Assignment</TableHeaderColumn>
                             <TableHeaderColumn dataField="changeDate" width="14.3%" >Change Date</TableHeaderColumn>
