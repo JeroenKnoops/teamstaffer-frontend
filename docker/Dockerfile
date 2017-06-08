@@ -1,7 +1,4 @@
-FROM nginx
-
-COPY dist /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+FROM digilabs/node-ci: 7.9.0
+WORKDIR /build-env
+ADD . /build-env
+RUN yarn start

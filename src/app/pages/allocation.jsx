@@ -50,6 +50,8 @@ export class Allocation extends React.Component {
         this.getActivities();
         this.getTeamMembers();
         this.getAvailability();
+        this.loadAllocationIntoWeeks();
+        
     }
 
     handleInputChange(e) {
@@ -129,7 +131,9 @@ export class Allocation extends React.Component {
                 </option>)
         });
 
-        
+        const allocationsInWeeks = this.state.allocations.filter(function(user){
+              console.log(user.userName);
+        });
 
         return (
             <div className="container">
@@ -179,18 +183,19 @@ export class Allocation extends React.Component {
                         name="changeDate"
                         onChange={this.handleInputChange.bind(this)}
                     />
-                    <input type="submit" className="btn btn-primary" value="Create activity"/>
+                    <input type="submit" className="btn btn-primary" value="Create allocation"/>
                 </form>
                 <form className="form-horizontal">
                         <br/>
                         <BootstrapTable data={this.state.allocations} cellEdit={cellEditProp}>
-                            <TableHeaderColumn dataField="userName" isKey={true} width="14.3%">User name</TableHeaderColumn>
-                            <TableHeaderColumn dataField="activityName" width="14.3%" >Activity name</TableHeaderColumn>
-                            <TableHeaderColumn dataField="commitment" width="14.3%" >Commitment</TableHeaderColumn>
-                            <TableHeaderColumn dataField="fteAssignment" width="14.3%">Allocation(FTE)</TableHeaderColumn>
-                            <TableHeaderColumn dataField="startAssignment" width="14.3%" >Start of Assignment</TableHeaderColumn>
-                            <TableHeaderColumn dataField="endAssignment" width="14.3%" >End of Assignment</TableHeaderColumn>
-                            <TableHeaderColumn dataField="changeDate" width="14.3%" >Change Date</TableHeaderColumn>
+                            <TableHeaderColumn dataField="userName" width="12,5%">User name</TableHeaderColumn>
+                            <TableHeaderColumn dataField="activityName" width="12.5%" >Activity name</TableHeaderColumn>
+                            <TableHeaderColumn dataField="commitment" width="12.5%" >Commitment</TableHeaderColumn>
+                            <TableHeaderColumn dataField="fteAssignment" width="12.5%">Allocation(FTE)</TableHeaderColumn>
+                            <TableHeaderColumn dataField="startAssignment" width="12.5%" >Start of Assignment</TableHeaderColumn>
+                            <TableHeaderColumn dataField="endAssignment" width="12.5%" >End of Assignment</TableHeaderColumn>
+                            <TableHeaderColumn dataField="changeDate" width="12.5%" >Change Date</TableHeaderColumn>
+                            <TableHeaderColumn dataField="id" isKey={true} width="12.5%">ID</TableHeaderColumn>
                         </BootstrapTable>
                     </form>
             </div>
