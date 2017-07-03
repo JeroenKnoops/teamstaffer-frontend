@@ -30,6 +30,13 @@ const cellEditProp = {
     mode: 'click'
 };
 
+const weeks = Array.from(new Array(52),(val,index)=>index);
+
+var userAvail = [{}];
+
+
+//var userAvail = [{}];
+
 export class Availability extends React.Component {
     constructor(props) {
         super(props)
@@ -44,7 +51,24 @@ componentDidMount() {
     this.getAvailability();
     this.getTeamMembers();
 }
+    mapUserAvailToWeekNumberArray(userName){
+        var userAvailWeeks = new Array(52).fill(0);
+        var mappedObject = {
+                userName: "rholdorp",
+                year: "2017"
+            };
 
+        this.state.availability.filter(function(avail){
+            if(userName == avail.userName){
+                userAvailWeeks[avail.week] = avail.hours;
+                mappedObject["userName"] = avail.userName;
+                mappedObject["year"] = avail.year;
+            }
+           
+        });
+         mappedObject = { ...mappedObject, ...userAvailWeeks};
+        return mappedObject;
+    }
     handleInputChange(e) {
         let id = e.target.getAttribute('id');
         this.formData[id] = e.target.value;
@@ -60,6 +84,7 @@ componentDidMount() {
         }).catch(error => {
             console.log(error);
         });
+        
     }
 
     getAvailability() {
@@ -90,6 +115,17 @@ componentDidMount() {
                 </option>)
         });
 
+        userAvail[0] = this.mapUserAvailToWeekNumberArray("rholdorp");
+
+        console.log(userAvail);
+
+        const tabWeeks = weeks.map((week) => {
+            return (<TableHeaderColumn 
+                        dataField={week}>Wk{week}</TableHeaderColumn>)
+  //                      >Wk{week}</TableHeaderColumn>)
+   //                     dataField={userAvail["allocation"][week].toString()}>Wk{week}</TableHeaderColumn>)
+        });
+
         return (
 
             <div className="container">
@@ -103,34 +139,33 @@ componentDidMount() {
                         onChange={this.handleInputChange.bind(this)}
                     />
                    <TextInput
-                        label="Availability"
-                        placeholder="Enter FTE availability"
-                        name="fteAvailability"
+                        label="Year"
+                        placeholder=""
+                        name="year"
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <TextInput
-                        label="Start date"
-                        placeholder="Enter start date"
-                        name="startDate"
+                        label="Week"
+                        placeholder=""
+                        name="week"
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <TextInput
-                        label="End date"
-                        placeholder="Enter end date"
-                        name="endDate"
+                        label="Hours"
+                        placeholder=""
+                        name="hours"
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <input type="submit" className="btn btn-primary" value="Add availability"/>
                 </form>
                 <form className="form-horizontal">
                     <br/>
-                    <BootstrapTable data={this.state.availability} cellEdit={cellEditProp}>
-                        <TableHeaderColumn dataField="userName" isKey={true} width="25%">User name</TableHeaderColumn>
-                        <TableHeaderColumn dataField="fteAvailability" width="25%" >% Availability</TableHeaderColumn>
-                        <TableHeaderColumn dataField="startDate" width="25%" >Start date</TableHeaderColumn>
-                        <TableHeaderColumn dataField="endDate" width="25%" >End date</TableHeaderColumn>
-                    </BootstrapTable>
-                </form>
+                       <BootstrapTable data={userAvail} cellEdit={cellEditProp}>
+                            <TableHeaderColumn isKey={true} dataField="userName">User name</TableHeaderColumn>
+                            <TableHeaderColumn dataField="year">Activity name</TableHeaderColumn>
+                            {tabWeeks}
+                        </BootstrapTable>
+                 </form>
             </div>
         );
     }

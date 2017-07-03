@@ -3,5 +3,6 @@
 **/cached_uglify/
 **/reports/
 
+.DS_Store
 yarn-error.log
 npm-debug.log
