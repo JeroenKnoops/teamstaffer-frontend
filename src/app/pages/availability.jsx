@@ -121,9 +121,8 @@ componentDidMount() {
 
         const tabWeeks = weeks.map((week) => {
             return (<TableHeaderColumn 
-                        dataField={week}>Wk{week}</TableHeaderColumn>)
-  //                      >Wk{week}</TableHeaderColumn>)
-   //                     dataField={userAvail["allocation"][week].toString()}>Wk{week}</TableHeaderColumn>)
+ //                       dataField={week.toString()} >Wk{week}</TableHeaderColumn>)
+                     dataField={week.toString()} width="40px">{week}</TableHeaderColumn>)
         });
 
         return (
@@ -160,9 +159,9 @@ componentDidMount() {
                 </form>
                 <form className="form-horizontal">
                     <br/>
-                       <BootstrapTable data={userAvail} cellEdit={cellEditProp}>
-                            <TableHeaderColumn isKey={true} dataField="userName">User name</TableHeaderColumn>
-                            <TableHeaderColumn dataField="year">Activity name</TableHeaderColumn>
+                       <BootstrapTable data={userAvail} cellEdit={cellEditProp} scrollTop={"bottom"}>
+                            <TableHeaderColumn isKey={true} dataField="userName" width="80px">User</TableHeaderColumn>
+                            <TableHeaderColumn dataField="year" width="50px">Year</TableHeaderColumn>
                             {tabWeeks}
                         </BootstrapTable>
                  </form>

@@ -38,19 +38,6 @@ module.exports = {
             }, {
               loader: 'css-loader',
               query: {
-                  modules: true,
-                  localIdentName: '[name]__[id]___[hash:base64:5]'
-                }
-            }
-            ])
-      }, {
-          test: /\.csss$/,
-          loader: combineLoaders([ 
-            {
-              loader: 'style-loader'
-            }, {
-              loader: 'css-loader',
-              query: {
                   modules: false,
                   localIdentName: '[name]__[id]___[hash:base64:5]'
                 }

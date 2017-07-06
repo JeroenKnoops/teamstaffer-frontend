@@ -116,11 +116,11 @@ export class Activity extends React.Component {
                 <form className="form-horizontal">
                     <br/>
                     <BootstrapTable data={this.state.activities} cellEdit={cellEditProp}>
-                        <TableHeaderColumn dataField="activityName" isKey={true} width="20%">Activity Name</TableHeaderColumn>
-                        <TableHeaderColumn dataField="activityNumber" width="20%" >Activity Number</TableHeaderColumn>
-                        <TableHeaderColumn dataField="domain" width="20%" >Domain</TableHeaderColumn>
-                        <TableHeaderColumn dataField="phase" width="20%" >Phase</TableHeaderColumn>
-                        <TableHeaderColumn dataField="changeDate" width="20%" >Change Date</TableHeaderColumn>
+                        <TableHeaderColumn dataField="activityName" isKey={true}>Activity Name</TableHeaderColumn>
+                        <TableHeaderColumn dataField="activityNumber" >Activity Number</TableHeaderColumn>
+                        <TableHeaderColumn dataField="domain" >Domain</TableHeaderColumn>
+                        <TableHeaderColumn dataField="phase" >Phase</TableHeaderColumn>
+                        <TableHeaderColumn dataField="changeDate" >Change Date</TableHeaderColumn>
                     </BootstrapTable>
                 </form>
             </div>
