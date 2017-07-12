@@ -2,6 +2,10 @@ import React from 'react';
 import axios from 'axios';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
+
+import AvailabilityGrid, { HeaderGridItem, DataPlaneGridItem, 
+    TextInputGridItem, FooterGridItem } from './availability-grid';
+
 const TextInput = (props) => (
     <div className="form-group">
         <label className="control-label col-sm-2" for="name">{props.label}:</label>
@@ -126,46 +130,12 @@ componentDidMount() {
         });
 
         return (
-
-            <div className="container">
-
-                <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
-                   <SelectInput
-                        label="User Name"
-                        placeholder="user name"
-                        name="userName"
-                        options={options}
-                        onChange={this.handleInputChange.bind(this)}
-                    />
-                   <TextInput
-                        label="Year"
-                        placeholder=""
-                        name="year"
-                        onChange={this.handleInputChange.bind(this)}
-                    />
-                    <TextInput
-                        label="Week"
-                        placeholder=""
-                        name="week"
-                        onChange={this.handleInputChange.bind(this)}
-                    />
-                    <TextInput
-                        label="Hours"
-                        placeholder=""
-                        name="hours"
-                        onChange={this.handleInputChange.bind(this)}
-                    />
-                    <input type="submit" className="btn btn-primary" value="Add availability"/>
-                </form>
-                <form className="form-horizontal">
-                    <br/>
-                       <BootstrapTable data={userAvail} cellEdit={cellEditProp} scrollTop={"bottom"}>
-                            <TableHeaderColumn isKey={true} dataField="userName" width="80px">User</TableHeaderColumn>
-                            <TableHeaderColumn dataField="year" width="50px">Year</TableHeaderColumn>
-                            {tabWeeks}
-                        </BootstrapTable>
-                 </form>
-            </div>
+            <AvailabilityGrid>
+                <HeaderGridItem>Header</HeaderGridItem>
+                <DataPlaneGridItem>DataPlaneGridItem</DataPlaneGridItem>
+                <TextInputGridItem>TextInputGridItem</TextInputGridItem>
+                <FooterGridItem>FooterGridItem</FooterGridItem>
+            </AvailabilityGrid>
         );
     }
 }
