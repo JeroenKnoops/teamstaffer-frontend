@@ -1,10 +1,55 @@
 import React from 'react';
 import axios from 'axios';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import Highcharts from 'react-highcharts';
+import DatePicker from 'react-bootstrap-date-picker';
 
 
-import AvailabilityGrid, { HeaderGridItem, DataPlaneGridItem, 
-    TextInputGridItem, FooterGridItem } from './availability-grid';
+import AvailabilityGrid, { HeaderGridItem, MainGridItem, SubmitGridItem } from './availability-grid';
+
+const commitments = ["Lead","Expectation","Committed"];
+
+const allocSeries = [
+    {
+        type: 'area',
+        name: 'Committed',
+        data: [
+            [Date.UTC(2017,1,1),24],
+            [Date.UTC(2017,2,3),24],
+            [Date.UTC(2017,3,1),16],
+            [Date.UTC(2017,4,5),16],
+            [Date.UTC(2017,5,1),16],
+            [Date.UTC(2017,6,7),16],
+            [Date.UTC(2017,7,2),8]
+        ]
+    },
+    {
+        type: 'area',
+        name: 'Expected',
+        data: [
+            [Date.UTC(2017,1,1),16],
+            [Date.UTC(2017,2,3),8],
+            [Date.UTC(2017,3,1),8],
+            [Date.UTC(2017,4,5),8],
+            [Date.UTC(2017,5,1),8],
+            [Date.UTC(2017,6,7),16],
+            [Date.UTC(2017,7,2),8]
+        ]
+    },
+    {
+        type: 'line',
+        name: 'Available',
+        data: [
+            [Date.UTC(2017,1,1),40],
+            [Date.UTC(2017,2,3),40],
+            [Date.UTC(2017,3,1),40],
+            [Date.UTC(2017,4,5),40],
+            [Date.UTC(2017,5,1),40],
+            [Date.UTC(2017,6,7),32],
+            [Date.UTC(2017,7,2),32]
+        ]
+    }
+];
 
 const TextInput = (props) => (
     <div className="form-group">
@@ -34,45 +79,26 @@ const cellEditProp = {
     mode: 'click'
 };
 
-const weeks = Array.from(new Array(52),(val,index)=>index);
-
-var userAvail = [{}];
-
-
-//var userAvail = [{}];
 
 export class Availability extends React.Component {
     constructor(props) {
         super(props)
         this.formData = {};
         this.state = {
-            teamMembers: [], 
-            availability: []
+            allocations: [],
+            activities: [],
+            teamMembers: [],
+            availabilities: []
         };
     }
 
-componentDidMount() {
-    this.getAvailability();
-    this.getTeamMembers();
-}
-    mapUserAvailToWeekNumberArray(userName){
-        var userAvailWeeks = new Array(52).fill(0);
-        var mappedObject = {
-                userName: "rholdorp",
-                year: "2017"
-            };
-
-        this.state.availability.filter(function(avail){
-            if(userName == avail.userName){
-                userAvailWeeks[avail.week] = avail.hours;
-                mappedObject["userName"] = avail.userName;
-                mappedObject["year"] = avail.year;
-            }
-           
-        });
-         mappedObject = { ...mappedObject, ...userAvailWeeks};
-        return mappedObject;
+    componentDidMount() {
+        this.getAllocations();
+        this.getActivities();
+        this.getTeamMembers();
+        this.getAvailability();
     }
+
     handleInputChange(e) {
         let id = e.target.getAttribute('id');
         this.formData[id] = e.target.value;
@@ -89,6 +115,16 @@ componentDidMount() {
             console.log(error);
         });
         
+    }
+
+    getAllocations() {
+
+        axios.get('http://localhost:8080/api/assignment').then(result => {
+            this.setState({allocations: result.data});
+
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     getAvailability() {
@@ -111,30 +147,141 @@ componentDidMount() {
         });
     }
 
+    getActivities() {
+
+        axios.get('http://localhost:8080/api/staff/activity').then(result => {
+            this.setState({activities: result.data});
+
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+
     render() {
        
-        const options = this.state.teamMembers.map((teamMember) => {
+        const userNameOptions = this.state.teamMembers.map((teamMember) => {
             return (<option>
                 {teamMember.userName}
                 </option>)
         });
 
-        userAvail[0] = this.mapUserAvailToWeekNumberArray("rholdorp");
+        const activityOptions = this.state.activities.map((activity) => {
+            return (<option>
+                {activity.activityName}
+                </option>)
+        });
 
-        console.log(userAvail);
-
-        const tabWeeks = weeks.map((week) => {
-            return (<TableHeaderColumn 
- //                       dataField={week.toString()} >Wk{week}</TableHeaderColumn>)
-                     dataField={week.toString()} width="40px">{week}</TableHeaderColumn>)
+        const commitmentOptions = commitments.map((commitment) => {
+            return (<option>
+                {commitment}
+                </option>)
         });
 
         return (
             <AvailabilityGrid>
-                <HeaderGridItem>Header</HeaderGridItem>
-                <DataPlaneGridItem>DataPlaneGridItem</DataPlaneGridItem>
-                <TextInputGridItem>TextInputGridItem</TextInputGridItem>
-                <FooterGridItem>FooterGridItem</FooterGridItem>
+                <HeaderGridItem>
+                    <SelectInput
+                        label="User Name"
+                        options={userNameOptions}
+                        placeholder="user name"
+                        name="userName"
+                        onChange={this.handleInputChange.bind(this)}
+                    />
+                </HeaderGridItem>
+                
+                <MainGridItem>
+                    <BootstrapTable data={this.state.allocations} cellEdit={cellEditProp}>
+                    <TableHeaderColumn dataField="activityName" width="12.5%" >Activity name</TableHeaderColumn>
+                    <TableHeaderColumn dataField="commitment" width="12.5%" >Commitment</TableHeaderColumn>
+                    <TableHeaderColumn dataField="fteAssignment" width="12.5%">Allocation(FTE)</TableHeaderColumn>
+                    <TableHeaderColumn dataField="startAssignment" width="12.5%" >Start of Assignment</TableHeaderColumn>
+                    <TableHeaderColumn dataField="endAssignment" width="12.5%" >End of Assignment</TableHeaderColumn>
+                    <TableHeaderColumn dataField="id" isKey={true} width="12.5%">ID</TableHeaderColumn>
+                    </BootstrapTable>
+                     
+                    <Highcharts config={{
+                        chart: {
+                            name: 'Allocation hours',
+                            zoomType: 'x'
+                        },
+                        title: {
+                            text: 'Allocation'
+                        },
+                        subtitle: {
+                            text: document.ontouchstart === undefined ?
+                                    'Allocation' : 'Pinch the chart to zoom in'
+                        },
+                        xAxis: {
+                            type: 'datetime'
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'Hours(wk)'
+                            }
+                        },
+                        legend: {
+                            enabled: false
+                        },
+
+                        plotOptions: {
+                            area: {
+                                stacking: 'normal'
+                            },
+                            line: {
+                                step: 'left'
+                            }
+                        },
+                        
+                        series: allocSeries
+                        
+                    }}/>
+                </MainGridItem>
+
+                <SubmitGridItem>
+                    <SelectInput
+                        label="Activity Name"
+                        options={activityOptions}
+                        placeholder="activity name"
+                        name="activityName"
+                        onChange={this.handleInputChange.bind(this)}
+                    />
+                    <SelectInput
+                        label="Commitment"
+                        placeholder="commitment level"
+                        options={commitmentOptions}
+                        name="commitment"
+                        onChange={this.handleInputChange.bind(this)}
+                    />
+                    <TextInput
+                        label="FTE allocation"
+                        placeholder="Enter allocation"
+                        name="fteAssignment"
+                        onChange={this.handleInputChange.bind(this)}
+                    />
+                    {/* <TextInput
+                        label="Start date"
+                        placeholder="Enter start date"
+                        name="startAssignment"
+                        onChange={this.handleInputChange.bind(this)}
+                    /> */}
+                    <DatePicker
+                    
+                    />
+                    <TextInput
+                        label="End date"
+                        placeholder="Enter end date"
+                        name="endAssignment"
+                        onChange={this.handleInputChange.bind(this)}
+                    />
+                    <TextInput
+                        label="Change date"
+                        placeholder="Enter change date"
+                        name="changeDate"
+                        onChange={this.handleInputChange.bind(this)}
+                    />
+                    <input type="submit" className="btn btn-primary" value="Create allocation"/>
+                </SubmitGridItem>
+
             </AvailabilityGrid>
         );
     }

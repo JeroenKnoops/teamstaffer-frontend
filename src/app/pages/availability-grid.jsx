@@ -3,30 +3,26 @@ import Grid from '../../helpers/Grid';
 import maxContent from '../../helpers/MaxContent';
 
 let grid = new Grid([
-  'header     header',
-  'dataPlane textInput',
-  'footer     footer'
-]);
+  'header    header   header',
+  'main      main     submit'
+], {gridTemplateRows: `${maxContent()} 1fr`});
 
 const gridItemLayout = {
-  display: 'flex',
+  display: 'table-row',
   justifyContent: 'center',
   alignItems: 'center',
-  fontSize: '28px',
+  fontSize: '10px',
   backgroundColor: 'CadetBlue',
-  padding: '5px'
+  padding: '5px',
 }
 
 const AvailabilityGrid = glamorous.div(grid.container, {height: '100vh', padding: '5px', boxSizing: 'border-box'});
 
 const HeaderGridItem = glamorous.div(grid.header, gridItemLayout);
 
-const DataPlaneGridItem = glamorous.div(grid.dataPlane, gridItemLayout);
+const MainGridItem = glamorous.div(grid.main, gridItemLayout);
 
-const TextInputGridItem = glamorous.div(grid.textInput, gridItemLayout);
-
-const FooterGridItem = glamorous.div(grid.footer, gridItemLayout);
+const SubmitGridItem = glamorous.div(grid.submit, gridItemLayout);
 
 export default AvailabilityGrid;
-export { HeaderGridItem, DataPlaneGridItem, TextInputGridItem, 
-  FooterGridItem };
+export { HeaderGridItem, MainGridItem, SubmitGridItem };
