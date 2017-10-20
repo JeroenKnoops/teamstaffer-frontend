@@ -3,14 +3,46 @@ import axios from 'axios';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Highcharts from 'react-highcharts';
 
-const data = [
-    {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
-    {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-    {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-    {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-    {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-    {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-    {name: 'Page G', uv: 3490, pv: 4300, amt: 2100},
+const allocSeries = [
+    {
+        type: 'area',
+        name: 'Committed',
+        data: [
+            [Date.UTC(2017,1,1),24],
+            [Date.UTC(2017,2,3),24],
+            [Date.UTC(2017,3,1),16],
+            [Date.UTC(2017,4,5),16],
+            [Date.UTC(2017,5,1),16],
+            [Date.UTC(2017,6,7),16],
+            [Date.UTC(2017,7,2),8]
+        ]
+    },
+    {
+        type: 'area',
+        name: 'Expected',
+        data: [
+            [Date.UTC(2017,1,1),16],
+            [Date.UTC(2017,2,3),8],
+            [Date.UTC(2017,3,1),8],
+            [Date.UTC(2017,4,5),8],
+            [Date.UTC(2017,5,1),8],
+            [Date.UTC(2017,6,7),16],
+            [Date.UTC(2017,7,2),8]
+        ]
+    },
+    {
+        type: 'line',
+        name: 'Available',
+        data: [
+            [Date.UTC(2017,1,1),40],
+            [Date.UTC(2017,2,3),40],
+            [Date.UTC(2017,3,1),40],
+            [Date.UTC(2017,4,5),40],
+            [Date.UTC(2017,5,1),40],
+            [Date.UTC(2017,6,7),32],
+            [Date.UTC(2017,7,2),32]
+        ]
+    }
 ];
 
 const StaffMemberRow = (props) => (
@@ -103,6 +135,7 @@ componentDidMount() {
                     <br/>
                     <Highcharts config={{
                         chart: {
+                            name: 'Allocation hours',
                             zoomType: 'x'
                         },
                         title: {
@@ -123,21 +156,18 @@ componentDidMount() {
                         legend: {
                             enabled: false
                         },
+
+                        plotOptions: {
+                            area: {
+                                stacking: 'normal'
+                            },
+                            line: {
+                                step: 'left'
+                            }
+                        },
                         
-                
-                        series: [{
-                            type: 'area',
-                            name: 'Allocation hours',
-                            data: [
-                                [Date.UTC(2017,1,1),1],
-                                [Date.UTC(2017,2,3),2],
-                                [Date.UTC(2017,3,1),3],
-                                [Date.UTC(2017,4,5),10],
-                                [Date.UTC(2017,5,1),2],
-                                [Date.UTC(2017,6,7),15],
-                                [Date.UTC(2017,7,2),5]
-                            ]
-                        }]
+                        series: allocSeries
+                        
                     }}/>
                 </form>
             </div>
