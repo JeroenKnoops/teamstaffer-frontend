@@ -1,11 +1,59 @@
 import React from 'react';
 import axios from 'axios';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import Highcharts from 'react-highcharts';
+import DatePicker from 'react-bootstrap-date-picker';
 
+
+import AllocationGrid, { HeaderGridItem, AllocTableGridItem, AllocChartGridItem, SubmitGridItem } from './allocation-grid';
+
+const commitments = ["Lead","Expectation","Committed"];
+
+const allocSeries = [
+    {
+        type: 'area',
+        name: 'Committed',
+        data: [
+            [Date.UTC(2017,1,1),24],
+            [Date.UTC(2017,2,3),24],
+            [Date.UTC(2017,3,1),16],
+            [Date.UTC(2017,4,5),16],
+            [Date.UTC(2017,5,1),16],
+            [Date.UTC(2017,6,7),16],
+            [Date.UTC(2017,7,2),8]
+        ]
+    },
+    {
+        type: 'area',
+        name: 'Expected',
+        data: [
+            [Date.UTC(2017,1,1),16],
+            [Date.UTC(2017,2,3),8],
+            [Date.UTC(2017,3,1),8],
+            [Date.UTC(2017,4,5),8],
+            [Date.UTC(2017,5,1),8],
+            [Date.UTC(2017,6,7),16],
+            [Date.UTC(2017,7,2),8]
+        ]
+    },
+    {
+        type: 'line',
+        name: 'Available',
+        data: [
+            [Date.UTC(2017,1,1),40],
+            [Date.UTC(2017,2,3),40],
+            [Date.UTC(2017,3,1),40],
+            [Date.UTC(2017,4,5),40],
+            [Date.UTC(2017,5,1),40],
+            [Date.UTC(2017,6,7),32],
+            [Date.UTC(2017,7,2),32]
+        ]
+    }
+];
 
 const TextInput = (props) => (
     <div className="form-group">
-        <label className="control-label col-sm-2" for="activityName">{props.label}:</label>
+        <label className="control-label col-sm-2" for="name">{props.label}:</label>
         <div className="col-sm-10">
             <input type="text" name={props.name} className="form-control" id={props.name}
                    placeholder={props.placeholder} onChange={props.onChange}/>
@@ -31,7 +79,6 @@ const cellEditProp = {
     mode: 'click'
 };
 
-const commitments = ["Lead","Expectation","Committed"];
 
 export class Allocation extends React.Component {
     constructor(props) {
@@ -50,8 +97,6 @@ export class Allocation extends React.Component {
         this.getActivities();
         this.getTeamMembers();
         this.getAvailability();
-        this.loadAllocationIntoWeeks();
-        
     }
 
     handleInputChange(e) {
@@ -61,9 +106,9 @@ export class Allocation extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-
+        
         let allocations = this.state.allocations;
-
+        console.log("hier komt ie...");
         axios.post('http://localhost:8080/api/assignment', this.formData, {timeout: 60000}).then(result => {
             this.getAllocations();
         }).catch(error => {
@@ -84,7 +129,7 @@ export class Allocation extends React.Component {
     getAvailability() {
 
         axios.get('http://localhost:8080/api/availability').then(result => {
-            this.setState({availabilities: result.data});
+            this.setState({availability: result.data});
 
         }).catch(error => {
             console.log(error);
@@ -112,7 +157,7 @@ export class Allocation extends React.Component {
     }
 
     render() {
-
+       
         const userNameOptions = this.state.teamMembers.map((teamMember) => {
             return (<option>
                 {teamMember.userName}
@@ -131,13 +176,9 @@ export class Allocation extends React.Component {
                 </option>)
         });
 
-        const allocationsInWeeks = this.state.allocations.filter(function(user){
-              console.log(user.userName);
-        });
-
         return (
-            <div className="container">
-                <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
+            <AllocationGrid>
+                <HeaderGridItem>
                     <SelectInput
                         label="User Name"
                         options={userNameOptions}
@@ -145,6 +186,60 @@ export class Allocation extends React.Component {
                         name="userName"
                         onChange={this.handleInputChange.bind(this)}
                     />
+                </HeaderGridItem>
+                
+                <AllocTableGridItem>
+                    <BootstrapTable data={this.state.allocations} cellEdit={cellEditProp}>
+                    <TableHeaderColumn dataField="activityName" width="12.5%" >Activity name</TableHeaderColumn>
+                    <TableHeaderColumn dataField="commitment" width="12.5%" >Commitment</TableHeaderColumn>
+                    <TableHeaderColumn dataField="fteAssignment" width="12.5%">Allocation(FTE)</TableHeaderColumn>
+                    <TableHeaderColumn dataField="startAssignment" width="12.5%" >Start of Assignment</TableHeaderColumn>
+                    <TableHeaderColumn dataField="endAssignment" width="12.5%" >End of Assignment</TableHeaderColumn>
+                    <TableHeaderColumn dataField="id" isKey={true} width="12.5%">ID</TableHeaderColumn>
+                    </BootstrapTable>
+                </AllocTableGridItem>
+
+                <AllocChartGridItem>
+                    <Highcharts config={{
+                        chart: {
+                            name: 'Allocation hours',
+                            zoomType: 'x'
+                        },
+                        title: {
+                            text: 'Allocation'
+                        },
+                        subtitle: {
+                            text: document.ontouchstart === undefined ?
+                                    'Allocation' : 'Pinch the chart to zoom in'
+                        },
+                        xAxis: {
+                            type: 'datetime'
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'Hours(wk)'
+                            }
+                        },
+                        legend: {
+                            enabled: false
+                        },
+
+                        plotOptions: {
+                            area: {
+                                stacking: 'normal'
+                            },
+                            line: {
+                                step: 'left'
+                            }
+                        },
+                        
+                        series: allocSeries
+                        
+                    }}/>
+                </AllocChartGridItem>
+
+                <SubmitGridItem>
+                    <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
                     <SelectInput
                         label="Activity Name"
                         options={activityOptions}
@@ -171,6 +266,7 @@ export class Allocation extends React.Component {
                         name="startAssignment"
                         onChange={this.handleInputChange.bind(this)}
                     />
+                    {/* <DatePicker/> */}
                     <TextInput
                         label="End date"
                         placeholder="Enter end date"
@@ -184,22 +280,10 @@ export class Allocation extends React.Component {
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <input type="submit" className="btn btn-primary" value="Create allocation"/>
-                </form>
-                <form className="form-horizontal">
-                        <br/>
-                        <BootstrapTable data={this.state.allocations} cellEdit={cellEditProp}>
-                            <TableHeaderColumn dataField="userName" width="12,5%">User name</TableHeaderColumn>
-                            <TableHeaderColumn dataField="activityName" width="12.5%" >Activity name</TableHeaderColumn>
-                            <TableHeaderColumn dataField="commitment" width="12.5%" >Commitment</TableHeaderColumn>
-                            <TableHeaderColumn dataField="fteAssignment" width="12.5%">Allocation(FTE)</TableHeaderColumn>
-                            <TableHeaderColumn dataField="startAssignment" width="12.5%" >Start of Assignment</TableHeaderColumn>
-                            <TableHeaderColumn dataField="endAssignment" width="12.5%" >End of Assignment</TableHeaderColumn>
-                            <TableHeaderColumn dataField="changeDate" width="12.5%" >Change Date</TableHeaderColumn>
-                            <TableHeaderColumn dataField="id" isKey={true} width="12.5%">ID</TableHeaderColumn>
-                        </BootstrapTable>
                     </form>
-            </div>
+                </SubmitGridItem>
+
+            </AllocationGrid>
         );
     }
-
 }

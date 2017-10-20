@@ -3,7 +3,6 @@ import { Router , Route, IndexRoute, hashHistory} from 'react-router';
 import { Root } from './root';
 import { Activity } from './pages/activity';
 import { Allocation } from './pages/allocation';
-import { Availability } from './pages/availability';
 import { TeamMember } from './pages/teammember';
 import { Charts } from './pages/charts';
 
@@ -31,7 +30,6 @@ export class Routes extends React.Component {
                     <Route path="/teammember" component={TeamMember} />
                     <Route path="/charts" component={Charts} />
                     <Route path="/allocation" component={Allocation} />
-                    <Route path="/availability" component={Availability} />
                 </Route>
             </Router>
         );

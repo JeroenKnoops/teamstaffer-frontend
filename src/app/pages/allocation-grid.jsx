@@ -17,7 +17,7 @@ const gridItemLayout = {
   padding: '5px',
 }
 
-const AvailabilityGrid = glamorous.div(grid.container, {height: '100vh', padding: '5px', boxSizing: 'border-box'});
+const AllocationGrid = glamorous.div(grid.container, {height: '100vh', padding: '5px', boxSizing: 'border-box'});
 
 const HeaderGridItem = glamorous.div(grid.header, gridItemLayout);
 
@@ -27,5 +27,5 @@ const AllocChartGridItem = glamorous.div(grid.allocChart, gridItemLayout);
 
 const SubmitGridItem = glamorous.div(grid.submit, gridItemLayout);
 
-export default AvailabilityGrid;
+export default AllocationGrid;
 export { HeaderGridItem, AllocTableGridItem, AllocChartGridItem, SubmitGridItem };
