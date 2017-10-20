@@ -5,7 +5,7 @@ import Highcharts from 'react-highcharts';
 import DatePicker from 'react-bootstrap-date-picker';
 
 
-import AvailabilityGrid, { HeaderGridItem, MainGridItem, SubmitGridItem } from './availability-grid';
+import AvailabilityGrid, { HeaderGridItem, AllocTableGridItem, AllocChartGridItem, SubmitGridItem } from './availability-grid';
 
 const commitments = ["Lead","Expectation","Committed"];
 
@@ -189,7 +189,7 @@ export class Availability extends React.Component {
                     />
                 </HeaderGridItem>
                 
-                <MainGridItem>
+                <AllocTableGridItem>
                     <BootstrapTable data={this.state.allocations} cellEdit={cellEditProp}>
                     <TableHeaderColumn dataField="activityName" width="12.5%" >Activity name</TableHeaderColumn>
                     <TableHeaderColumn dataField="commitment" width="12.5%" >Commitment</TableHeaderColumn>
@@ -198,7 +198,9 @@ export class Availability extends React.Component {
                     <TableHeaderColumn dataField="endAssignment" width="12.5%" >End of Assignment</TableHeaderColumn>
                     <TableHeaderColumn dataField="id" isKey={true} width="12.5%">ID</TableHeaderColumn>
                     </BootstrapTable>
-                     
+                </AllocTableGridItem>
+
+                <AllocChartGridItem>
                     <Highcharts config={{
                         chart: {
                             name: 'Allocation hours',
@@ -235,7 +237,7 @@ export class Availability extends React.Component {
                         series: allocSeries
                         
                     }}/>
-                </MainGridItem>
+                </AllocChartGridItem>
 
                 <SubmitGridItem>
                     <SelectInput
@@ -258,15 +260,13 @@ export class Availability extends React.Component {
                         name="fteAssignment"
                         onChange={this.handleInputChange.bind(this)}
                     />
-                    {/* <TextInput
+                    <TextInput
                         label="Start date"
                         placeholder="Enter start date"
                         name="startAssignment"
                         onChange={this.handleInputChange.bind(this)}
-                    /> */}
-                    <DatePicker
-                    
                     />
+                    {/* <DatePicker/> */}
                     <TextInput
                         label="End date"
                         placeholder="Enter end date"

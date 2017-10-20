@@ -3,12 +3,13 @@ import Grid from '../../helpers/Grid';
 import maxContent from '../../helpers/MaxContent';
 
 let grid = new Grid([
-  'header    header   header',
-  'main      main     submit'
+  'header         header          header',
+  'allocTable     allocTable      submit',
+  'allocChart     allocChart      allocChart'
 ], {gridTemplateRows: `${maxContent()} 1fr`});
 
 const gridItemLayout = {
-  display: 'table-row',
+  display: 'inline-block',
   justifyContent: 'center',
   alignItems: 'center',
   fontSize: '10px',
@@ -20,9 +21,11 @@ const AvailabilityGrid = glamorous.div(grid.container, {height: '100vh', padding
 
 const HeaderGridItem = glamorous.div(grid.header, gridItemLayout);
 
-const MainGridItem = glamorous.div(grid.main, gridItemLayout);
+const AllocTableGridItem = glamorous.div(grid.allocTable, gridItemLayout);
+
+const AllocChartGridItem = glamorous.div(grid.allocChart, gridItemLayout);
 
 const SubmitGridItem = glamorous.div(grid.submit, gridItemLayout);
 
 export default AvailabilityGrid;
-export { HeaderGridItem, MainGridItem, SubmitGridItem };
+export { HeaderGridItem, AllocTableGridItem, AllocChartGridItem, SubmitGridItem };
