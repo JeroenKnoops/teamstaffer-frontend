@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import Highcharts from 'react-highcharts';
 
 const data = [
     {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
@@ -101,16 +101,44 @@ componentDidMount() {
             <div className="container">
                 <form className="form-horizontal">
                     <br/>
-                    <AreaChart width={600} height={400} data={data}
-                               margin={{top: 10, right: 30, left: 0, bottom: 0}}>
-                        <XAxis dataKey="name"/>
-                        <YAxis/>
-                        <CartesianGrid strokeDasharray="3 3"/>
-                        <Tooltip/>
-                        <Area type='monotone' dataKey='uv' stackId="1" stroke='#8884d8' fill='#8884d8' />
-                        <Area type='monotone' dataKey='pv' stackId="1" stroke='#82ca9d' fill='#82ca9d' />
-                        <Area type='monotone' dataKey='amt' stackId="1" stroke='#ffc658' fill='#ffc658' />
-                    </AreaChart>
+                    <Highcharts config={{
+                        chart: {
+                            zoomType: 'x'
+                        },
+                        title: {
+                            text: 'Allocation'
+                        },
+                        subtitle: {
+                            text: document.ontouchstart === undefined ?
+                                    'Allocation' : 'Pinch the chart to zoom in'
+                        },
+                        xAxis: {
+                            type: 'datetime'
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'Hours(wk)'
+                            }
+                        },
+                        legend: {
+                            enabled: false
+                        },
+                        
+                
+                        series: [{
+                            type: 'area',
+                            name: 'Allocation hours',
+                            data: [
+                                [Date.UTC(2017,1,1),1],
+                                [Date.UTC(2017,2,3),2],
+                                [Date.UTC(2017,3,1),3],
+                                [Date.UTC(2017,4,5),10],
+                                [Date.UTC(2017,5,1),2],
+                                [Date.UTC(2017,6,7),15],
+                                [Date.UTC(2017,7,2),5]
+                            ]
+                        }]
+                    }}/>
                 </form>
             </div>
         );
