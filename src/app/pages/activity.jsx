@@ -104,12 +104,6 @@ export class Activity extends React.Component {
                         name="phase"
                         onChange={this.handleInputChange.bind(this)}
                     />
-                    <TextInput
-                        label="Change Date"
-                        placeholder="Change date"
-                        name="changeDate"
-                        onChange={this.handleInputChange.bind(this)}
-                    />
                     <input type="submit" className="btn btn-primary" value="Create activity"/>
                 </form>
 
@@ -120,7 +114,6 @@ export class Activity extends React.Component {
                         <TableHeaderColumn dataField="activityNumber" >Activity Number</TableHeaderColumn>
                         <TableHeaderColumn dataField="domain" >Domain</TableHeaderColumn>
                         <TableHeaderColumn dataField="phase" >Phase</TableHeaderColumn>
-                        <TableHeaderColumn dataField="changeDate" >Change Date</TableHeaderColumn>
                     </BootstrapTable>
                 </form>
             </div>

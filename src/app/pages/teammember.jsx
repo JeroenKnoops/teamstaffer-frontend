@@ -1,7 +1,22 @@
 import React from 'react';
 import axios from 'axios';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import DatePicker from 'react-bootstrap-date-picker';
 
+const DateInput = (props) => (
+    <div className="form-group">
+        <label className="control-label col-sm-2" for="name">{props.label}:</label>
+        <div className="col-sm-10">
+            <DatePicker
+                name={props.name} 
+                className="form-control" 
+                id={props.name}
+                placeholder={props.placeholder} 
+                onChange={props.onChange}
+            />
+        </div>
+    </div>
+)
 
 const TextInput = (props) => (
     <div className="form-group">
@@ -90,9 +105,9 @@ componentDidMount() {
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <TextInput
-                        label="Department"
-                        placeholder="Enter department"
-                        name="department"
+                        label="Organisation"
+                        placeholder="Enter organisation"
+                        name="organisation"
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <SelectInput
@@ -102,15 +117,36 @@ componentDidMount() {
                         name="contractType"
                         onChange={this.handleInputChange.bind(this)}
                     />
+                    <TextInput
+                        label="Available from"
+                        placeholder="Available from"
+                        name="startAvail"
+                        onChange={this.handleInputChange.bind(this)}
+                    />
+                    <TextInput
+                        label="Available till"
+                        placeholder="Available till"
+                        name="endAvail"
+                        onChange={this.handleInputChange.bind(this)}
+                    />
+                    <TextInput
+                        label="Hours available"
+                        placeholder="Hours available"
+                        name="hoursAvail"
+                        onChange={this.handleInputChange.bind(this)}
+                    />
                     <input type="submit" className="btn btn-primary" value="Create staff member"/>
                 </form>
 
                 <form className="form-horizontal">
                     <br/>
                     <BootstrapTable data={this.state.teamMembers} cellEdit={cellEditProp}>
-                        <TableHeaderColumn dataField="userName" isKey={true} width="33%">User name</TableHeaderColumn>
-                        <TableHeaderColumn dataField="department" width="33%">Department</TableHeaderColumn>
-                        <TableHeaderColumn dataField="contractType" width="33%">Contract Type</TableHeaderColumn>
+                        <TableHeaderColumn dataField="userName" isKey={true} width="17%">User name</TableHeaderColumn>
+                        <TableHeaderColumn dataField="organisation" width="17%">Department</TableHeaderColumn>
+                        <TableHeaderColumn dataField="contractType" width="17%">Contract Type</TableHeaderColumn>
+                        <TableHeaderColumn dataField="startAvail" width="17%">Contract Type</TableHeaderColumn>
+                        <TableHeaderColumn dataField="endAvail" width="17%">Contract Type</TableHeaderColumn>
+                        <TableHeaderColumn dataField="hoursAvail" width="17%">Contract Type</TableHeaderColumn>
                     </BootstrapTable>
                 </form>
             </div>

@@ -51,6 +51,23 @@ const allocSeries = [
     }
 ];
 
+
+
+const DateInput = (props) => (
+    <div className="form-group">
+        <label className="control-label col-sm-2" for="name">{props.label}:</label>
+        <div className="col-sm-10">
+            <DatePicker
+                name={props.name} 
+                className="form-control" 
+                id={props.name}
+                placeholder={props.placeholder} 
+                onChange={props.onChange}
+            />
+        </div>
+    </div>
+)
+
 const TextInput = (props) => (
     <div className="form-group">
         <label className="control-label col-sm-2" for="name">{props.label}:</label>
@@ -260,23 +277,16 @@ export class Allocation extends React.Component {
                         name="fteAssignment"
                         onChange={this.handleInputChange.bind(this)}
                     />
-                    <TextInput
+                    <DateInput
                         label="Start date"
                         placeholder="Enter start date"
                         name="startAssignment"
                         onChange={this.handleInputChange.bind(this)}
                     />
-                    {/* <DatePicker/> */}
-                    <TextInput
+                    <DateInput
                         label="End date"
                         placeholder="Enter end date"
                         name="endAssignment"
-                        onChange={this.handleInputChange.bind(this)}
-                    />
-                    <TextInput
-                        label="Change date"
-                        placeholder="Enter change date"
-                        name="changeDate"
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <input type="submit" className="btn btn-primary" value="Create allocation"/>
