@@ -58,12 +58,21 @@ const DateInput = (props) => (
         <label className="control-label col-sm-2" for="name">{props.label}:</label>
         <div className="col-sm-10">
             <DatePicker
-                name={props.name} 
-                className="form-control" 
-                id={props.name}
-                placeholder={props.placeholder} 
-                onChange={props.onChange}
+                    name={props.name} 
+                    id={props.name}
+                    placeholder={props.placeholder} 
+                    onChange={props.onChange}
             />
+        </div>
+    </div>
+)
+
+const NumberInput = (props) => (
+    <div className="form-group">
+        <label className="control-label col-sm-2" for="name">{props.label}:</label>
+        <div className="col-sm-10">
+            <input type="number" name={props.name} className="form-control" id={props.name}
+                   placeholder={props.placeholder} onChange={props.onChange}/>
         </div>
     </div>
 )
@@ -119,6 +128,16 @@ export class Allocation extends React.Component {
     handleInputChange(e) {
         let id = e.target.getAttribute('id');
         this.formData[id] = e.target.value;
+    }
+
+    handleInputNumberChange(e) {
+        let id = e.target.getAttribute('id');
+        this.formData[id] = Number(e.target.value);
+    }
+
+    handleInputDateChange(id, e) {
+        var dateTime = e.slice(0, 16);
+        this.formData[id] = dateTime;
     }
 
     handleSubmit(e) {
@@ -207,12 +226,11 @@ export class Allocation extends React.Component {
                 
                 <AllocTableGridItem>
                     <BootstrapTable data={this.state.allocations} cellEdit={cellEditProp}>
-                    <TableHeaderColumn dataField="activityName" width="12.5%" >Activity name</TableHeaderColumn>
+                    <TableHeaderColumn dataField="activityName" isKey={true} width="12.5%" >Activity name</TableHeaderColumn>
                     <TableHeaderColumn dataField="commitment" width="12.5%" >Commitment</TableHeaderColumn>
-                    <TableHeaderColumn dataField="fteAssignment" width="12.5%">Allocation(FTE)</TableHeaderColumn>
-                    <TableHeaderColumn dataField="startAssignment" width="12.5%" >Start of Assignment</TableHeaderColumn>
-                    <TableHeaderColumn dataField="endAssignment" width="12.5%" >End of Assignment</TableHeaderColumn>
-                    <TableHeaderColumn dataField="id" isKey={true} width="12.5%">ID</TableHeaderColumn>
+                    <TableHeaderColumn dataField="startAlloc" width="12.5%" >Start of Assignment</TableHeaderColumn>
+                    <TableHeaderColumn dataField="endAlloc" width="12.5%" >End of Assignment</TableHeaderColumn>
+                    <TableHeaderColumn dataField="hoursAlloc" width="12.5%">Alloc(hrs)</TableHeaderColumn>
                     </BootstrapTable>
                 </AllocTableGridItem>
 
@@ -271,23 +289,23 @@ export class Allocation extends React.Component {
                         name="commitment"
                         onChange={this.handleInputChange.bind(this)}
                     />
-                    <TextInput
-                        label="FTE allocation"
-                        placeholder="Enter allocation"
-                        name="fteAssignment"
-                        onChange={this.handleInputChange.bind(this)}
-                    />
                     <DateInput
                         label="Start date"
                         placeholder="Enter start date"
-                        name="startAssignment"
-                        onChange={this.handleInputChange.bind(this)}
+                        name="startAlloc"
+                        onChange={this.handleInputDateChange.bind(this,'startAlloc')}
                     />
                     <DateInput
                         label="End date"
                         placeholder="Enter end date"
-                        name="endAssignment"
-                        onChange={this.handleInputChange.bind(this)}
+                        name="endAlloc"
+                        onChange={this.handleInputDateChange.bind(this,'endAlloc')}
+                    />
+                    <NumberInput
+                        label="Hours allocation"
+                        placeholder="Enter allocation"
+                        name="hoursAlloc"
+                        onChange={this.handleInputNumberChange.bind(this)}
                     />
                     <input type="submit" className="btn btn-primary" value="Create allocation"/>
                     </form>

@@ -8,11 +8,10 @@ const DateInput = (props) => (
         <label className="control-label col-sm-2" for="name">{props.label}:</label>
         <div className="col-sm-10">
             <DatePicker
-                name={props.name} 
-                className="form-control" 
-                id={props.name}
-                placeholder={props.placeholder} 
-                onChange={props.onChange}
+                    name={props.name} 
+                    id={props.name}
+                    placeholder={props.placeholder} 
+                    onChange={props.onChange}
             />
         </div>
     </div>
@@ -23,6 +22,16 @@ const TextInput = (props) => (
         <label className="control-label col-sm-2" for="name">{props.label}:</label>
         <div className="col-sm-10">
             <input type="text" name={props.name} className="form-control" id={props.name}
+                   placeholder={props.placeholder} onChange={props.onChange}/>
+        </div>
+    </div>
+)
+
+const NumberInput = (props) => (
+    <div className="form-group">
+        <label className="control-label col-sm-2" for="name">{props.label}:</label>
+        <div className="col-sm-10">
+            <input type="number" name={props.name} className="form-control" id={props.name}
                    placeholder={props.placeholder} onChange={props.onChange}/>
         </div>
     </div>
@@ -61,6 +70,16 @@ componentDidMount() {
     handleInputChange(e) {
         let id = e.target.getAttribute('id');
         this.formData[id] = e.target.value;
+    }
+
+    handleInputNumberChange(e) {
+        let id = e.target.getAttribute('id');
+        this.formData[id] = Number(e.target.value);
+    }
+
+    handleInputDateChange(id, e) {
+        var dateTime = e.slice(0, 16);
+        this.formData[id] = dateTime;
     }
 
     handleSubmit(e) {
@@ -117,23 +136,23 @@ componentDidMount() {
                         name="contractType"
                         onChange={this.handleInputChange.bind(this)}
                     />
-                    <TextInput
+                    <DateInput
                         label="Available from"
                         placeholder="Available from"
                         name="startAvail"
-                        onChange={this.handleInputChange.bind(this)}
+                        onChange={this.handleInputDateChange.bind(this,'startAvail')}
                     />
-                    <TextInput
+                    <DateInput
                         label="Available till"
                         placeholder="Available till"
                         name="endAvail"
-                        onChange={this.handleInputChange.bind(this)}
+                        onChange={this.handleInputDateChange.bind(this,'endAvail')}
                     />
-                    <TextInput
+                    <NumberInput
                         label="Hours available"
                         placeholder="Hours available"
                         name="hoursAvail"
-                        onChange={this.handleInputChange.bind(this)}
+                        onChange={this.handleInputNumberChange.bind(this)}
                     />
                     <input type="submit" className="btn btn-primary" value="Create staff member"/>
                 </form>
