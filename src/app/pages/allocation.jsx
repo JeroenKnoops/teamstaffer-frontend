@@ -67,21 +67,11 @@ const DateInput = (props) => (
     </div>
 )
 
-const NumberInput = (props) => (
-    <div className="form-group">
-        <label className="control-label col-sm-2" for="name">{props.label}:</label>
-        <div className="col-sm-10">
-            <input type="number" name={props.name} className="form-control" id={props.name}
-                   placeholder={props.placeholder} onChange={props.onChange}/>
-        </div>
-    </div>
-)
-
 const TextInput = (props) => (
     <div className="form-group">
         <label className="control-label col-sm-2" for="name">{props.label}:</label>
         <div className="col-sm-10">
-            <input type="text" name={props.name} className="form-control" id={props.name}
+            <input type={props.type} name={props.name} className="form-control" id={props.name}
                    placeholder={props.placeholder} onChange={props.onChange}/>
         </div>
     </div>
@@ -114,7 +104,7 @@ export class Allocation extends React.Component {
             allocations: [],
             activities: [],
             teamMembers: [],
-            availabilities: []
+            userAllocation: []
         };
     }
 
@@ -122,12 +112,23 @@ export class Allocation extends React.Component {
         this.getAllocations();
         this.getActivities();
         this.getTeamMembers();
-        this.getAvailability();
+    }
+
+    getUserAllocation(userName) {
+        
+        const userAllocations = this.state.allocations.filter(allocation => allocation.userName == userName);
+        this.setState({userAllocations: userAllocations});
+        console.log(userAllocations);
     }
 
     handleInputChange(e) {
         let id = e.target.getAttribute('id');
         this.formData[id] = e.target.value;
+    }
+
+    handleSelectChange(e) {
+        console.log("userName: ",e.target.value);
+        this.getUserAllocation(e.target.value);
     }
 
     handleInputNumberChange(e) {
@@ -162,15 +163,6 @@ export class Allocation extends React.Component {
         });
     }
 
-    getAvailability() {
-
-        axios.get('http://localhost:8080/api/availability').then(result => {
-            this.setState({availability: result.data});
-
-        }).catch(error => {
-            console.log(error);
-        });
-    }
 
     getTeamMembers() {
 
@@ -220,12 +212,13 @@ export class Allocation extends React.Component {
                         options={userNameOptions}
                         placeholder="user name"
                         name="userName"
-                        onChange={this.handleInputChange.bind(this)}
+                        onChange={this.handleSelectChange.bind(this)}
                     />
                 </HeaderGridItem>
                 
                 <AllocTableGridItem>
-                    <BootstrapTable data={this.state.allocations} cellEdit={cellEditProp}>
+                    <BootstrapTable data={this.state.userAllocations} cellEdit={cellEditProp}>
+                    <TableHeaderColumn dataField="userName" width="12.5%" >Activity name</TableHeaderColumn>
                     <TableHeaderColumn dataField="activityName" isKey={true} width="12.5%" >Activity name</TableHeaderColumn>
                     <TableHeaderColumn dataField="commitment" width="12.5%" >Commitment</TableHeaderColumn>
                     <TableHeaderColumn dataField="startAlloc" width="12.5%" >Start of Assignment</TableHeaderColumn>
@@ -280,6 +273,7 @@ export class Allocation extends React.Component {
                         options={activityOptions}
                         placeholder="activity name"
                         name="activityName"
+                        type="text"
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <SelectInput
@@ -287,6 +281,7 @@ export class Allocation extends React.Component {
                         placeholder="commitment level"
                         options={commitmentOptions}
                         name="commitment"
+                        type="text"
                         onChange={this.handleInputChange.bind(this)}
                     />
                     <DateInput
@@ -301,10 +296,11 @@ export class Allocation extends React.Component {
                         name="endAlloc"
                         onChange={this.handleInputDateChange.bind(this,'endAlloc')}
                     />
-                    <NumberInput
+                    <TextInput
                         label="Hours allocation"
                         placeholder="Enter allocation"
                         name="hoursAlloc"
+                        type="text"
                         onChange={this.handleInputNumberChange.bind(this)}
                     />
                     <input type="submit" className="btn btn-primary" value="Create allocation"/>
