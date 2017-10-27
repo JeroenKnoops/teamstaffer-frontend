@@ -9,47 +9,49 @@ import AllocationGrid, { HeaderGridItem, AllocTableGridItem, AllocChartGridItem,
 
 const commitments = ["Lead","Expectation","Committed"];
 
-const allocSeries = [
-    {
-        type: 'area',
-        name: 'Committed',
-        data: [
-            [Date.UTC(2017,1,1),24],
-            [Date.UTC(2017,2,3),24],
-            [Date.UTC(2017,3,1),16],
-            [Date.UTC(2017,4,5),16],
-            [Date.UTC(2017,5,1),16],
-            [Date.UTC(2017,6,7),16],
-            [Date.UTC(2017,7,2),8]
-        ]
-    },
-    {
-        type: 'area',
-        name: 'Expected',
-        data: [
-            [Date.UTC(2017,1,1),16],
-            [Date.UTC(2017,2,3),8],
-            [Date.UTC(2017,3,1),8],
-            [Date.UTC(2017,4,5),8],
-            [Date.UTC(2017,5,1),8],
-            [Date.UTC(2017,6,7),16],
-            [Date.UTC(2017,7,2),8]
-        ]
-    },
-    {
-        type: 'line',
-        name: 'Available',
-        data: [
-            [Date.UTC(2017,1,1),40],
-            [Date.UTC(2017,2,3),40],
-            [Date.UTC(2017,3,1),40],
-            [Date.UTC(2017,4,5),40],
-            [Date.UTC(2017,5,1),40],
-            [Date.UTC(2017,6,7),32],
-            [Date.UTC(2017,7,2),32]
-        ]
-    }
-];
+
+// const allocSeries = [
+//     {
+//         type: 'area',
+//         name: 'Committed',
+//         data: this.state.userCommitted
+//     }
+//     //         [Date.UTC(2017,1,1),24],
+    //         [Date.UTC(2017,2,3),24],
+    //         [Date.UTC(2017,3,1),16],
+    //         [Date.UTC(2017,4,5),16],
+    //         [Date.UTC(2017,5,1),16],
+    //         [Date.UTC(2017,6,7),16],
+    //         [Date.UTC(2017,7,2),8]
+    //     ]
+    // },
+    // {
+    //     type: 'area',
+    //     name: 'Expected',
+    //     data: [
+    //         [Date.UTC(2017,1,1),16],
+    //         [Date.UTC(2017,2,3),8],
+    //         [Date.UTC(2017,3,1),8],
+    //         [Date.UTC(2017,4,5),8],
+    //         [Date.UTC(2017,5,1),8],
+    //         [Date.UTC(2017,6,7),16],
+    //         [Date.UTC(2017,7,2),8]
+    //     ]
+    // },
+    // {
+    //     type: 'line',
+    //     name: 'Available',
+    //     data: [
+    //         [Date.UTC(2017,1,1),40],
+    //         [Date.UTC(2017,2,3),40],
+    //         [Date.UTC(2017,3,1),40],
+    //         [Date.UTC(2017,4,5),40],
+    //         [Date.UTC(2017,5,1),40],
+    //         [Date.UTC(2017,6,7),32],
+    //         [Date.UTC(2017,7,2),32]
+    //     ]
+    // }
+//];
 
 
 
@@ -104,7 +106,10 @@ export class Allocation extends React.Component {
             allocations: [],
             activities: [],
             teamMembers: [],
-            userAllocation: []
+            userAllocation: [],
+            userCommitted: [],
+            userExpectation: [],
+            userLead: []
         };
     }
 
@@ -114,11 +119,42 @@ export class Allocation extends React.Component {
         this.getTeamMembers();
     }
 
+    mapUserCommitted(){
+
+    }
+
+    
     getUserAllocation(userName) {
         
         const userAllocations = this.state.allocations.filter(allocation => allocation.userName == userName);
         this.setState({userAllocations: userAllocations});
-        console.log(userAllocations);
+
+        const userCommittedAllocs = userAllocations.filter(allocation => allocation.commitment == "Committed");
+        const mappedCommittedStart = userCommittedAllocs.map(allocation => ([Date.parse(allocation.startAlloc), allocation.hoursAlloc]));
+        const mappedCommittedEnd = userCommittedAllocs.map(allocation => ([Date.parse(allocation.endAlloc), allocation.hoursAlloc]));
+        const userCommitted = mappedCommittedStart.concat(mappedCommittedEnd);
+        this.setState({userCommitted});
+
+        const userExpectationAllocs = userAllocations.filter(allocation => allocation.commitment == "Expectation");
+        const mappedExpectationStart = userExpectationAllocs.map(allocation => ([Date.parse(allocation.startAlloc), allocation.hoursAlloc]));
+        const mappedExpectationEnd = userExpectationAllocs.map(allocation => ([Date.parse(allocation.endAlloc), allocation.hoursAlloc]));
+        const userExpectation = mappedExpectationStart.concat(mappedExpectationEnd);
+        this.setState({userExpectation});
+        
+        const userLeadAllocs = userAllocations.filter(allocation => allocation.commitment == "Lead");
+        const mappedLeadStart = userLeadAllocs.map(allocation => ([Date.parse(allocation.startAlloc), allocation.hoursAlloc]));
+        const mappedLeadEnd = userLeadAllocs.map(allocation => ([Date.parse(allocation.endAlloc), allocation.hoursAlloc]));
+        const userLead = mappedLeadStart.concat(mappedLeadEnd);
+        this.setState({userLead});
+        
+        // const userExpectedAllocs = userAllocations.filter(allocation => allocation.commitment == "Expectation");
+        // const mappedExpect = userExpectedAllocs.map(allocation => ([new Date(allocation.startAlloc), allocation.hoursAlloc]));
+        // console.log("mapped",mappedExpect);
+        // const userLeadAllocs = userAllocations.filter(allocation => allocation.commitment == "Lead");
+        // console.log(userAllocations);
+        // console.log("committed:", userCommittedAllocs);
+        // console.log("expectation", userExpectedAllocs);
+        // console.log("lead", userLeadAllocs);
     }
 
     handleInputChange(e) {
@@ -127,7 +163,8 @@ export class Allocation extends React.Component {
     }
 
     handleSelectChange(e) {
-        console.log("userName: ",e.target.value);
+        let id = e.target.getAttribute('id');
+        this.formData[id] = e.target.value;
         this.getUserAllocation(e.target.value);
     }
 
@@ -137,6 +174,9 @@ export class Allocation extends React.Component {
     }
 
     handleInputDateChange(id, e) {
+        console.log("e ",e);
+        console.log("id ",id);
+        
         var dateTime = e.slice(0, 16);
         this.formData[id] = dateTime;
     }
@@ -145,7 +185,6 @@ export class Allocation extends React.Component {
         e.preventDefault();
         
         let allocations = this.state.allocations;
-        console.log("hier komt ie...");
         axios.post('http://localhost:8080/api/assignment', this.formData, {timeout: 60000}).then(result => {
             this.getAllocations();
         }).catch(error => {
@@ -186,6 +225,23 @@ export class Allocation extends React.Component {
 
     render() {
        
+        const allocSeries = [
+            {
+                type: 'area',
+                name: 'Committed',
+                data: this.state.userCommitted
+            },
+            {
+                type: 'area',
+                name: 'Expectation',
+                data: this.state.userExpectation
+            },
+            {
+                type: 'area',
+                name: 'Lead',
+                data: this.state.userLead
+            }
+        ];
         const userNameOptions = this.state.teamMembers.map((teamMember) => {
             return (<option>
                 {teamMember.userName}
@@ -262,7 +318,6 @@ export class Allocation extends React.Component {
                         },
                         
                         series: allocSeries
-                        
                     }}/>
                 </AllocChartGridItem>
 
