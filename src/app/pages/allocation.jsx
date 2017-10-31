@@ -3,56 +3,11 @@ import axios from 'axios';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import Highcharts from 'react-highcharts';
 import DatePicker from 'react-bootstrap-date-picker';
-
+import moment from 'moment';
 
 import AllocationGrid, { HeaderGridItem, AllocTableGridItem, AllocChartGridItem, SubmitGridItem } from './allocation-grid';
 
 const commitments = ["Lead","Expectation","Committed"];
-
-
-// const allocSeries = [
-//     {
-//         type: 'area',
-//         name: 'Committed',
-//         data: this.state.userCommitted
-//     }
-//     //         [Date.UTC(2017,1,1),24],
-    //         [Date.UTC(2017,2,3),24],
-    //         [Date.UTC(2017,3,1),16],
-    //         [Date.UTC(2017,4,5),16],
-    //         [Date.UTC(2017,5,1),16],
-    //         [Date.UTC(2017,6,7),16],
-    //         [Date.UTC(2017,7,2),8]
-    //     ]
-    // },
-    // {
-    //     type: 'area',
-    //     name: 'Expected',
-    //     data: [
-    //         [Date.UTC(2017,1,1),16],
-    //         [Date.UTC(2017,2,3),8],
-    //         [Date.UTC(2017,3,1),8],
-    //         [Date.UTC(2017,4,5),8],
-    //         [Date.UTC(2017,5,1),8],
-    //         [Date.UTC(2017,6,7),16],
-    //         [Date.UTC(2017,7,2),8]
-    //     ]
-    // },
-    // {
-    //     type: 'line',
-    //     name: 'Available',
-    //     data: [
-    //         [Date.UTC(2017,1,1),40],
-    //         [Date.UTC(2017,2,3),40],
-    //         [Date.UTC(2017,3,1),40],
-    //         [Date.UTC(2017,4,5),40],
-    //         [Date.UTC(2017,5,1),40],
-    //         [Date.UTC(2017,6,7),32],
-    //         [Date.UTC(2017,7,2),32]
-    //     ]
-    // }
-//];
-
 
 
 const DateInput = (props) => (
@@ -107,9 +62,9 @@ export class Allocation extends React.Component {
             activities: [],
             teamMembers: [],
             userAllocation: [],
-            userCommitted: [],
-            userExpectation: [],
-            userLead: []
+            wksCommitted: [],
+            wksExpectation: [],
+            wksLead: []
         };
     }
 
@@ -130,31 +85,44 @@ export class Allocation extends React.Component {
         this.setState({userAllocations: userAllocations});
 
         const userCommittedAllocs = userAllocations.filter(allocation => allocation.commitment == "Committed");
-        const mappedCommittedStart = userCommittedAllocs.map(allocation => ([Date.parse(allocation.startAlloc), allocation.hoursAlloc]));
-        const mappedCommittedEnd = userCommittedAllocs.map(allocation => ([Date.parse(allocation.endAlloc), allocation.hoursAlloc]));
-        const userCommitted = mappedCommittedStart.concat(mappedCommittedEnd);
-        this.setState({userCommitted});
+
+        var wksCommitted = Array.from(new Array(52),() => 0);
+
+        userCommittedAllocs.forEach(function(allocation){
+            var startWk = moment(Date.parse(allocation.startAlloc)).week();
+            var endWk = moment(Date.parse(allocation.endAlloc)).week();
+            for(var wkIndex = startWk; wkIndex < endWk; wkIndex++){
+                wksCommitted[wkIndex] += allocation.hoursAlloc;
+            }
+        });
+        this.setState({wksCommitted});
 
         const userExpectationAllocs = userAllocations.filter(allocation => allocation.commitment == "Expectation");
-        const mappedExpectationStart = userExpectationAllocs.map(allocation => ([Date.parse(allocation.startAlloc), allocation.hoursAlloc]));
-        const mappedExpectationEnd = userExpectationAllocs.map(allocation => ([Date.parse(allocation.endAlloc), allocation.hoursAlloc]));
-        const userExpectation = mappedExpectationStart.concat(mappedExpectationEnd);
-        this.setState({userExpectation});
+
+        var wksExpectation = Array.from(new Array(52),() => 0);
+        
+        userExpectationAllocs.forEach(function(allocation){
+                var startWk = moment(Date.parse(allocation.startAlloc)).week();
+                var endWk = moment(Date.parse(allocation.endAlloc)).week();
+                for(var wkIndex = startWk; wkIndex < endWk; wkIndex++){
+                    wksExpectation[wkIndex] += allocation.hoursAlloc;
+                }
+            });
+        this.setState({wksExpectation});
+        
         
         const userLeadAllocs = userAllocations.filter(allocation => allocation.commitment == "Lead");
-        const mappedLeadStart = userLeadAllocs.map(allocation => ([Date.parse(allocation.startAlloc), allocation.hoursAlloc]));
-        const mappedLeadEnd = userLeadAllocs.map(allocation => ([Date.parse(allocation.endAlloc), allocation.hoursAlloc]));
-        const userLead = mappedLeadStart.concat(mappedLeadEnd);
-        this.setState({userLead});
+
+        var wksLead = Array.from(new Array(52),() => 0);
         
-        // const userExpectedAllocs = userAllocations.filter(allocation => allocation.commitment == "Expectation");
-        // const mappedExpect = userExpectedAllocs.map(allocation => ([new Date(allocation.startAlloc), allocation.hoursAlloc]));
-        // console.log("mapped",mappedExpect);
-        // const userLeadAllocs = userAllocations.filter(allocation => allocation.commitment == "Lead");
-        // console.log(userAllocations);
-        // console.log("committed:", userCommittedAllocs);
-        // console.log("expectation", userExpectedAllocs);
-        // console.log("lead", userLeadAllocs);
+        userLeadAllocs.forEach(function(allocation){
+                var startWk = moment(Date.parse(allocation.startAlloc)).week();
+                var endWk = moment(Date.parse(allocation.endAlloc)).week();
+                for(var wkIndex = startWk; wkIndex < endWk; wkIndex++){
+                    wksLead[wkIndex] += allocation.hoursAlloc;
+                }
+            });
+        this.setState({wksLead});
     }
 
     handleInputChange(e) {
@@ -176,7 +144,6 @@ export class Allocation extends React.Component {
     handleInputDateChange(id, e) {
         console.log("e ",e);
         console.log("id ",id);
-        
         var dateTime = e.slice(0, 16);
         this.formData[id] = dateTime;
     }
@@ -229,17 +196,17 @@ export class Allocation extends React.Component {
             {
                 type: 'area',
                 name: 'Committed',
-                data: this.state.userCommitted
+                data: this.state.wksCommitted
             },
             {
                 type: 'area',
                 name: 'Expectation',
-                data: this.state.userExpectation
+                data: this.state.wksExpectation
             },
             {
                 type: 'area',
                 name: 'Lead',
-                data: this.state.userLead
+                data: this.state.wksLead
             }
         ];
         const userNameOptions = this.state.teamMembers.map((teamMember) => {
@@ -297,7 +264,7 @@ export class Allocation extends React.Component {
                                     'Allocation' : 'Pinch the chart to zoom in'
                         },
                         xAxis: {
-                            type: 'datetime'
+                            type: 'linear'
                         },
                         yAxis: {
                             title: {
