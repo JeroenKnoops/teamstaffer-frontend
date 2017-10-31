@@ -277,7 +277,11 @@ export class Allocation extends React.Component {
 
                         plotOptions: {
                             area: {
-                                stacking: 'normal'
+                                stacking: 'normal',
+                                marker: {
+                                    enabled: false
+                                }
+
                             },
                             line: {
                                 step: 'left'
