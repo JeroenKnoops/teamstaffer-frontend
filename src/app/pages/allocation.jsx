@@ -196,16 +196,19 @@ export class Allocation extends React.Component {
             {
                 type: 'area',
                 name: 'Committed',
+                color: 'lightgreen',
                 data: this.state.wksCommitted
             },
             {
                 type: 'area',
                 name: 'Expectation',
+                color: '#F2FEB4',
                 data: this.state.wksExpectation
             },
             {
                 type: 'area',
                 name: 'Lead',
+                color: 'orange',
                 data: this.state.wksLead
             }
         ];
@@ -240,13 +243,13 @@ export class Allocation extends React.Component {
                 </HeaderGridItem>
                 
                 <AllocTableGridItem>
-                    <BootstrapTable data={this.state.userAllocations} cellEdit={cellEditProp}>
-                    <TableHeaderColumn dataField="userName" width="12.5%" >Activity name</TableHeaderColumn>
-                    <TableHeaderColumn dataField="activityName" isKey={true} width="12.5%" >Activity name</TableHeaderColumn>
-                    <TableHeaderColumn dataField="commitment" width="12.5%" >Commitment</TableHeaderColumn>
-                    <TableHeaderColumn dataField="startAlloc" width="12.5%" >Start of Assignment</TableHeaderColumn>
-                    <TableHeaderColumn dataField="endAlloc" width="12.5%" >End of Assignment</TableHeaderColumn>
-                    <TableHeaderColumn dataField="hoursAlloc" width="12.5%">Alloc(hrs)</TableHeaderColumn>
+                    <BootstrapTable data={this.state.userAllocations} cellEdit={cellEditProp} bodyStyle={{height: '250px'}}>
+                        <TableHeaderColumn dataField="userName" width="12.5%" >Activity name</TableHeaderColumn>
+                        <TableHeaderColumn dataField="activityName" isKey={true} width="12.5%" >Activity name</TableHeaderColumn>
+                        <TableHeaderColumn dataField="commitment" width="12.5%" >Commitment</TableHeaderColumn>
+                        <TableHeaderColumn dataField="startAlloc" width="12.5%" >Start of Assignment</TableHeaderColumn>
+                        <TableHeaderColumn dataField="endAlloc" width="12.5%" >End of Assignment</TableHeaderColumn>
+                        <TableHeaderColumn dataField="hoursAlloc" width="12.5%">Alloc(hrs)</TableHeaderColumn>
                     </BootstrapTable>
                 </AllocTableGridItem>
 
@@ -254,7 +257,8 @@ export class Allocation extends React.Component {
                     <Highcharts config={{
                         chart: {
                             name: 'Allocation hours',
-                            zoomType: 'x'
+                            zoomType: 'x',
+                            height: '400px'
                         },
                         title: {
                             text: 'Allocation'
@@ -264,7 +268,7 @@ export class Allocation extends React.Component {
                                     'Allocation' : 'Pinch the chart to zoom in'
                         },
                         xAxis: {
-                            type: 'linear'
+                            type: 'datetime'
                         },
                         yAxis: {
                             title: {
@@ -272,12 +276,13 @@ export class Allocation extends React.Component {
                             }
                         },
                         legend: {
-                            enabled: false
+                            enabled: true
                         },
 
                         plotOptions: {
                             area: {
                                 stacking: 'normal',
+                                lineWidth: 0,
                                 marker: {
                                     enabled: false
                                 }

@@ -3,7 +3,7 @@ import Grid from '../../helpers/Grid';
 import maxContent from '../../helpers/MaxContent';
 
 let grid = new Grid([
-  'header         header          header',
+  'header         null          null',
   'allocTable     allocTable      submit',
   'allocChart     allocChart      allocChart'
 ], {gridTemplateRows: `${maxContent()} 1fr`});
@@ -13,7 +13,9 @@ const gridItemLayout = {
   justifyContent: 'center',
   alignItems: 'center',
   fontSize: '10px',
-  backgroundColor: 'CadetBlue',
+  borderStyle: 'solid',
+  borderWidth: '1px',
+  borderColor: 'grey',
   padding: '5px',
 }
 
