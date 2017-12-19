@@ -9,6 +9,7 @@ import AllocationGrid, { HeaderGridItem, AllocTableGridItem, AllocChartGridItem,
 
 const commitments = ["Lead","Expectation","Committed"];
 
+const xAxisArray = Array.from(new Array(52),(val,index)=>moment().utc().day("Monday").year(2017).week(index).format('YYYY-MM-DD'));
 
 const DateInput = (props) => (
     <div className="form-group">
@@ -77,19 +78,6 @@ export class Allocation extends React.Component {
     mapUserCommitted(){
 
     }
-
-    createWkDateArray(year) {
-
-        // var wkDateArray = [];
-        // for(var index=0;index<52;index++){
-        //     wkDateArray[moment().utc().year(year).week(index).day("Monday").format()] = 55;
-        // }
-        // return wkDateArray;
-        var wkDateArray = Array.from(new Array(52),(val,index)=>moment().utc().day("Monday").year(year).week(index).format('YYYY-MM-DD'));
-        var zeroArray = Array.from(new Array(52),() => 55);
-        return wkDateArray.map(function(v, k, a){ return {date: v, value: zeroArray[k]}; });
-       
-    }
     
     getUserAllocation(userName) {
         
@@ -98,48 +86,46 @@ export class Allocation extends React.Component {
 
         const userCommittedAllocs = userAllocations.filter(allocation => allocation.commitment == "Committed");
 
-        var wksCommit = this.createWkDateArray(2017);
+        var wksCommitted = Array.from(new Array(52),() => 0);
         
-        // userCommittedAllocs.forEach(function(allocation){
-        //     var startWk = moment(Date.parse(allocation.startAlloc)).dayOfYear();
-        //     var endWk = moment(Date.parse(allocation.endAlloc)).dayOfYear();
-        //     console.log(startWk);
-        //     console.log(endWk);
-        //     for(var wkIndex = startWk; wkIndex < endWk; wkIndex++){
-        //         wksCommitted[wkIndex] += allocation.hoursAlloc;
-        //     }
-        // });
-        var wksCommitted = wksCommit.map(wk => [wk.date,wk.value]);
-        console.log(wksCommitted);
+        userCommittedAllocs.forEach(function(allocation){
+            var startWk = moment(Date.parse(allocation.startAlloc)).week();
+            var endWk = moment(Date.parse(allocation.endAlloc)).week();
+            console.log(startWk);
+            console.log(endWk);
+            for(var wkIndex = startWk; wkIndex < endWk; wkIndex++){
+                wksCommitted[wkIndex] += allocation.hoursAlloc;
+            }
+        });
+
         this.setState({wksCommitted});
 
         const userExpectationAllocs = userAllocations.filter(allocation => allocation.commitment == "Expectation");
 
-        var wksExpect = this.createWkDateArray(2017);
+        var wksExpectation = Array.from(new Array(52),() => 0);
         
-        // userExpectationAllocs.forEach(function(allocation){
-        //         var startWk = moment(Date.parse(allocation.startAlloc)).week();
-        //         var endWk = moment(Date.parse(allocation.endAlloc)).week();
-        //         for(var wkIndex = startWk; wkIndex < endWk; wkIndex++){
-        //             wksExpectation[wkIndex] += allocation.hoursAlloc;
-        //         }
-        //     });
-        var wksExpectation = wksExpect.map(wk => [wk.date,wk.value]);
+        userExpectationAllocs.forEach(function(allocation){
+                var startWk = moment(Date.parse(allocation.startAlloc)).week();
+                var endWk = moment(Date.parse(allocation.endAlloc)).week();
+                for(var wkIndex = startWk; wkIndex < endWk; wkIndex++){
+                    wksExpectation[wkIndex] += allocation.hoursAlloc;
+                }
+            });
         this.setState({wksExpectation});
         
         
         const userLeadAllocs = userAllocations.filter(allocation => allocation.commitment == "Lead");
 
-        var wkLead = this.createWkDateArray(2017);
-        
-        // userLeadAllocs.forEach(function(allocation){
-        //         var startWk = moment(Date.parse(allocation.startAlloc)).week();
-        //         var endWk = moment(Date.parse(allocation.endAlloc)).week();
-        //         for(var wkIndex = startWk; wkIndex < endWk; wkIndex++){
-        //             wksLead[wkIndex] += allocation.hoursAlloc;
-        //         }
-        //     });
-        var wksLead = wkLead.map(wk => [wk.date,wk.value]);
+        var wksLead = Array.from(new Array(52),() => 0);
+
+        userLeadAllocs.forEach(function(allocation){
+                var startWk = moment(Date.parse(allocation.startAlloc)).week();
+                var endWk = moment(Date.parse(allocation.endAlloc)).week();
+                for(var wkIndex = startWk; wkIndex < endWk; wkIndex++){
+                    wksLead[wkIndex] += allocation.hoursAlloc;
+                }
+            });
+
         this.setState({wksLead});
     }
 
@@ -286,7 +272,8 @@ export class Allocation extends React.Component {
                                     'Allocation' : 'Pinch the chart to zoom in'
                         },
                         xAxis: {
-                            type: 'datetime'
+                            type: 'datetime',
+                            categories: xAxisArray
                         },
 
                         yAxis: {
